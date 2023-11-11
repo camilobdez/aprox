@@ -8,6 +8,7 @@ import TopBar from './components/TopBar';
 import About from './components/About';
 import Bisection from './components/methods/Bisection';
 import FalsePosition from './components/methods/FalsePosition';
+import FixedPoint from './components/methods/FixedPoint';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/help" element={<Help />} />
           <Route path="/methods/bisection" element={<Bisection/>}/>
           <Route path="/methods/false-position" element={<FalsePosition/>}/>
+          <Route path="/methods/fixed-point" element={<FixedPoint/>}/>
         </Routes>
       </div>
     </Router>

@@ -26,12 +26,12 @@ const Methods = () => {
         {isExpanded('equations') && (
           <div>
             <ul>
-                <li><Link to="/bisection"><span>bisection</span></Link></li>
-                <li><Link to="/false-position"><span>false position</span></Link></li>
-                <li><Link to="/fixed-point"><span>fixed point</span></Link></li>
-                <li><Link to="/newton-raphson"><span>newton-raphson</span></Link></li>
-                <li><Link to="/secant"><span>secant</span></Link></li>
-                <li><Link to="/multiple-roots"><span>multiple roots</span></Link></li>
+                <li><Link to="/methods/bisection"><span>bisection</span></Link></li>
+                <li><Link to="/methods/false-position"><span>false position</span></Link></li>
+                <li><Link to="/methods/fixed-point"><span>fixed point</span></Link></li>
+                <li><Link to="/methods/newton-raphson"><span>newton-raphson</span></Link></li>
+                <li><Link to="/methods/secant"><span>secant</span></Link></li>
+                <li><Link to="/methods/multiple-roots"><span>multiple roots</span></Link></li>
             </ul>
           </div>
         )}
@@ -44,9 +44,9 @@ const Methods = () => {
         {isExpanded('systems') && (
           <div>
             <ul>
-                <li><Link to="/jacobi"><span>jacobi</span></Link></li>
-                <li><Link to="/gauss-seidel"><span>gauss-seidel</span></Link></li>
-                <li><Link to="/sor"><span>sor</span></Link></li>
+                <li><Link to="/methods/jacobi"><span>jacobi</span></Link></li>
+                <li><Link to="/methods/gauss-seidel"><span>gauss-seidel</span></Link></li>
+                <li><Link to="/methods/sor"><span>sor</span></Link></li>
             </ul>
           </div>
         )}
@@ -59,10 +59,10 @@ const Methods = () => {
         {isExpanded('interpolation') && (
           <div>
             <ul>
-                <li><Link to="/vandermonde"><span>vandermonde</span></Link></li>
-                <li><Link to="/newton"><span>newton</span></Link></li>
-                <li><Link to="/lagrange"><span>lagrange</span></Link></li>
-                <li><Link to="/spline"><span>spline</span></Link></li>
+                <li><Link to="/methods/vandermonde"><span>vandermonde</span></Link></li>
+                <li><Link to="/methods/newton"><span>newton</span></Link></li>
+                <li><Link to="/methods/lagrange"><span>lagrange</span></Link></li>
+                <li><Link to="/methods/spline"><span>spline</span></Link></li>
             </ul>
           </div>
         )}

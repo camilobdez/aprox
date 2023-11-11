@@ -19,8 +19,8 @@ const App = () => {
           <Route path="/methods" element={<Methods />} />
           <Route path="/about" element={<About />} />
           <Route path="/help" element={<Help />} />
-          <Route path="/bisection" element={<Bisection/>}/>
-          <Route path="/false-position" element={<FalsePosition/>}/>
+          <Route path="/methods/bisection" element={<Bisection/>}/>
+          <Route path="/methods/false-position" element={<FalsePosition/>}/>
         </Routes>
       </div>
     </Router>

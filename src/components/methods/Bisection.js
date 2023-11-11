@@ -10,55 +10,36 @@ const Bisection = () => {
 
   return (
     <div>
+      <a className='method-title' >bisection</a>
+
       <div className='form-container'>
         
         <form className='form'>
 
           <label >
-            Function:
-            <input
-              type="text"
-              value={funct}
-              onChange={(e) => setFunct(e.target.value)}
-              />
+            function
+            <input type="text"value={funct} onChange={(e) => setFunct(e.target.value)}/>
           </label>
 
           <label>
-            Function
-            <input
-              type="text"
-              value={funct}
-              onChange={(e) => setFunct(e.target.value)}
-              />
+            left endpoint
+            <input type="number" value={a} onChange={(e) => setA(e.target.value)}/>
           </label>
 
           <label>
-            Function
-            <input
-              type="text"
-              value={funct}
-              onChange={(e) => setFunct(e.target.value)}
-              />
+            right endpoint
+            <input type="number" value={b} onChange={(e) => setB(e.target.value)}/>
           </label>
 
           <label>
-            Function
-            <input
-              type="text"
-              value={funct}
-              onChange={(e) => setFunct(e.target.value)}
-              />
+            tolerance 
+            <input type="number"value={tolerance} onChange={(e) => setTolerance(e.target.value)}/>
           </label>
 
           <label>
-            Function
-            <input
-              type="text"
-              value={funct}
-              onChange={(e) => setFunct(e.target.value)}
-              />
+            max iterations
+            <input type="number"value={maxIterations} onChange={(e) => setMaxIterations(e.target.value)}/>
           </label>
-
 
         </form>
       </div>

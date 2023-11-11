@@ -100,15 +100,32 @@ nav ul li a {
 
 .form-container {
   text-align: left;
-  width: 300px; /* Set the desired width for the form container */
-  margin: 0; /* Remove default margin to avoid centering */
-}
-
-.form {
-  width: 100%; /* Take up the available width within the container */
+  width: 300px;
+  margin: 0;
+  padding: 15px;
+  font-size: 19px;
 }
 
 .form label {
   display: block;
   margin-bottom: 10px;
+  color:#c2fbe1;
+  
+}
+
+.form input {
+  color:#00ce7c;
+  display: block;
+  width: 100%; /* Adjust the width of the inputs as needed */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.method-title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px; /* Add padding as needed */
+  font-size: 28px;
+  margin: 5px;
+  font-weight: bold;
 }

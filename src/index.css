@@ -97,6 +97,15 @@ nav ul li a {
   font-size: 20px;
 }
 
+.cont-method {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.title-method {
+  padding: 20px;
+}
 
 .form-container {
   text-align: left;
@@ -121,11 +130,41 @@ nav ul li a {
 }
 
 .method-title {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 20px; /* Add padding as needed */
   font-size: 28px;
-  margin: 5px;
   font-weight: bold;
+}
+
+.content-method {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.result {
+  width: 50%;
+  justify-content: space-around;
+  margin-right: 100px;
+}
+
+.result table {
+  width: 100%;
+  border-collapse: collapse;
+  
+}
+
+.result th,
+.result td {
+  color:#00ce7c;  
+  border: 1px solid #c2fbe1;
+  padding: 8px;
+  text-align: center;
+}
+
+.result tr:first-child th {
+  color:#9578d3; 
+}
+
+.result tr > :first-child {
+  color:#c2fbe1; 
 }

@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom'; // Updated import statements
+import Home from './components/Home';
+import Methods from './components/Methods';
+import Help from './components/Help';
+import TopBar from './components/TopBar';
+import About from './components/About';
+import Bisection from './components/methods/Bisection';
+import FalsePosition from './components/methods/FalsePosition';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className='App'>
+        <TopBar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/methods" element={<Methods />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/bisection" element={<Bisection/>}/>
+          <Route path="/false-position" element={<FalsePosition/>}/>
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;

@@ -54,6 +54,14 @@ const NewtonRaphson = () => {
             </label>
 
             <button type="submit" style={{color: '#00ce7c'}}>run</button>
+
+            <a className='button-graph'
+            href={"/graph?function=" + encodeURIComponent(funct)}
+            target="_blank"
+            rel="noopener noreferrer">
+              graph {funct}
+            </a>
+            
           </form>
         </div>
 

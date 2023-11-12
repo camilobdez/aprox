@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Graph from '../Graph';
 import axios from 'axios';
 
 const Bisection = () => {
@@ -34,7 +35,7 @@ const Bisection = () => {
         <div className='form-container'>
           
           <form className='form' onSubmit={handleFormSubmit}>
-
+          
             <label >
               function
               <input type="text"value={funct} onChange={(e) => setFunct(e.target.value)}/>
@@ -61,6 +62,14 @@ const Bisection = () => {
             </label>
 
             <button type="submit" style={{color: '#00ce7c'}}>run</button>
+
+            <a className='button-graph'
+            href={"/graph?function=" + encodeURIComponent(funct)}
+            target="_blank"
+            rel="noopener noreferrer">
+              graph {funct}
+            </a>
+            
           </form>
         </div>
 

@@ -6,12 +6,14 @@ import Methods from './components/Methods';
 import Help from './components/Help';
 import TopBar from './components/TopBar';
 import About from './components/About';
+import Graph from './components/Graph';
 import Bisection from './components/methods/Bisection';
 import FalsePosition from './components/methods/FalsePosition';
 import FixedPoint from './components/methods/FixedPoint';
 import NewtonRaphson from './components/methods/NewtonRaphson';
 import Secant from './components/methods/Secant';
 import MultipleRoots from './components/methods/MultipleRoots';
+
 
 const App = () => {
   return (
@@ -29,6 +31,7 @@ const App = () => {
           <Route path="/methods/newton-raphson" element={<NewtonRaphson/>}/>
           <Route path="/methods/secant" element={<Secant/>}/>
           <Route path='/methods/multiple-roots' element={<MultipleRoots/>}/>
+          <Route path='/graph' element={<Graph/>}/>
         </Routes>
       </div>
     </Router>

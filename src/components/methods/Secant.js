@@ -28,7 +28,7 @@ const Secant = () => {
 
   return (
     <div className='container-method'>
-      <div className='title-method'><a className='method-title' >newton-raphson</a></div>
+      <div className='title-method'><a className='method-title' >secant</a></div>
 
       <div className='content-method'>
         <div className='form-container'>

@@ -8,7 +8,7 @@ from methods.secant import my_secant
 from methods.multiple_roots import my_multipleroots
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS
+CORS(app)
 
 @app.route('/bisection', methods=['POST'])
 def bisection():

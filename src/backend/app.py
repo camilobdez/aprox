@@ -5,6 +5,7 @@ from methods.false_position import my_false_position
 from methods.fixed_point import my_fixed_point
 from methods.newton_raphson import my_newtonraphson
 from methods.secant import my_secant
+from methods.multiple_roots import my_multipleroots
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS
@@ -61,6 +62,16 @@ def secant():
     tol = float(data['tolerance'])
     max_it = float(data['maxIterations'])
     result = my_secant(f, x0, x1,  tol, max_it)
+    return jsonify({'result': result})
+
+@app.route('/multipleroots', methods=['POST'])
+def multipleroots():
+    data = request.get_json()
+    f = data['funct']
+    x0 = float(data['x0'])
+    tol = float(data['tolerance'])
+    max_it = float(data['maxIterations'])
+    result = my_multipleroots(f, x0,  tol, max_it)
     return jsonify({'result': result})
 
 

@@ -4,6 +4,7 @@ from methods.bisection import my_bisection
 from methods.false_position import my_false_position
 from methods.fixed_point import my_fixed_point
 from methods.newton_raphson import my_newtonraphson
+from methods.secant import my_secant
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS
@@ -49,6 +50,17 @@ def newtonraphson():
     tol = float(data['tolerance'])
     max_it = float(data['maxIterations'])
     result = my_newtonraphson(f, x0, tol, max_it)
+    return jsonify({'result': result})
+
+@app.route('/secant', methods=['POST'])
+def secant():
+    data = request.get_json()
+    f = data['funct']
+    x0 = float(data['x0'])
+    x1 = float(data['x1'])
+    tol = float(data['tolerance'])
+    max_it = float(data['maxIterations'])
+    result = my_secant(f, x0, x1,  tol, max_it)
     return jsonify({'result': result})
 
 

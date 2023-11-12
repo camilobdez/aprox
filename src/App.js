@@ -10,6 +10,7 @@ import Bisection from './components/methods/Bisection';
 import FalsePosition from './components/methods/FalsePosition';
 import FixedPoint from './components/methods/FixedPoint';
 import NewtonRaphson from './components/methods/NewtonRaphson';
+import Secant from './components/methods/Secant';
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/methods/false-position" element={<FalsePosition/>}/>
           <Route path="/methods/fixed-point" element={<FixedPoint/>}/>
           <Route path="/methods/newton-raphson" element={<NewtonRaphson/>}/>
+          <Route path="/methods/secant" element={<Secant/>}/>
         </Routes>
       </div>
     </Router>

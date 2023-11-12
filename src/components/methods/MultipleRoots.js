@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const MultipleRoots = () => {
-  const [funct, setFunct] = useState('x**2-2');
+  const [funct, setFunct] = useState('x**2-2*x+1');
   const [x0, setx0] = useState('-100');
   const [tolerance, setTolerance] = useState('1e-7');
   const [maxIterations, setMaxIterations] = useState('100');

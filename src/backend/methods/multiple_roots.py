@@ -20,6 +20,8 @@ def my_multipleroots(funct, x0, tol, max_iter):
         f_x=f(x0)
         current_iteration = [f"{i}", f"{x0:.10f}", f"{f_x:.4e}", f"{E:.4e}"]
         iterations.append(current_iteration)
+        if (f_x==0):
+            break
         i += 1
         print(current_iteration)
     return iterations

@@ -1,4 +1,4 @@
-import numpy as np
+
 
 def my_bisection(funct, a, b, tol, max_iter):
     f = lambda x: eval(funct)

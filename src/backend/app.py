@@ -86,12 +86,15 @@ def jacobi_route():
     max_iter = int(data['maxIterations'])
 
     try:
+        #result, sol, errors, num_iterations = my_jacobi(coefficients, constants, initial_guess, tol, max_iter)
+        #response = {'result': result.tolist(), 'solution': sol, 'errors': errors, 'numIterations': num_iterations}
         result, errors, num_iterations = my_jacobi(coefficients, constants, initial_guess, tol, max_iter)
-        response = {'result': result.tolist(), 'errors': errors, 'numIterations': num_iterations}
+        response = {'result': result, 'errors': errors, 'numIterations': num_iterations}
     except Exception as e:
         response = {'error': str(e)}
 
     return jsonify(response)
+
 
 
 

@@ -1,6 +1,6 @@
 import numpy as np
 
-def my_jacobi(A, b, x0, tol, max_iter):
+def my_sor(A, b, x0, tol, max_iter, w):
     D = np.diag(np.diag(A))
     L = -np.tril(A, k=-1)
     U = -np.triu(A, k=1)
@@ -13,8 +13,8 @@ def my_jacobi(A, b, x0, tol, max_iter):
     radio = 0
 
     while error > tol and c < max_iter:
-        T = np.linalg.inv(D) @ (L + U)
-        C = np.linalg.inv(D) @ b
+        T = np.linalg.inv(D-w*L) @ ((1-w)*D+w*U)
+        C = w*np.linalg.inv(D-w*L) @ b
         x1 = T @ x0 + C
         radio = np.max(np.abs(np.linalg.eigvals(T)))
         

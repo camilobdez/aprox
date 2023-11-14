@@ -56,7 +56,7 @@ const MultipleRoots = () => {
             <button type="submit" style={{color: '#00ce7c'}}>run</button>
 
             <a className='button-graph'
-            href={"/graph?function=" + encodeURIComponent(funct)}
+            href={"/graph?function=" + encodeURIComponent(funct.replace(/e\^\((.*?)\)/g, 'exp($1)'))}
             target="_blank"
             rel="noopener noreferrer">
               graph {funct}

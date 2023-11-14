@@ -15,6 +15,7 @@ import Secant from './components/methods/Secant';
 import MultipleRoots from './components/methods/MultipleRoots';
 import Jacobi from './components/methods/Jacobi';
 import GaussSeidel from './components/methods/GaussSeidel';
+import Sor from './components/methods/SOR';
 
 
 const App = () => {
@@ -36,6 +37,7 @@ const App = () => {
           <Route path='/graph' element={<Graph/>}/>
           <Route path='/methods/jacobi' element={<Jacobi/>}/>
           <Route path='/methods/gauss_seidel' element={<GaussSeidel/>}/>
+          <Route path='/methods/sor' element={<Sor/>}/>
         </Routes>
       </div>
     </Router>

@@ -10,6 +10,7 @@ from methods.secant import my_secant
 from methods.multiple_roots import my_multipleroots
 from methods.jacobi import my_jacobi
 from methods.gauss_seidel import my_gauss_seidel
+from methods.sor import my_sor
 
 app = Flask(__name__)
 CORS(app)
@@ -114,6 +115,25 @@ def gaussseidel():
 
     try:
         result, errors, num_iterations, radio = my_gauss_seidel(coefficients, constants, initial_guess, tol, max_iter)
+        response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
+    except Exception as e:
+        response = {'error': str(e)}
+
+    return jsonify(response)
+
+
+@app.route('/sor', methods=['POST'])
+def sor():
+    data = request.get_json()
+    coefficients = np.array(data['coefficients'])
+    constants = np.array(data['constants'])
+    initial_guess = np.array(data['initialGuess'])
+    tol = float(data['tolerance'])
+    max_iter = int(data['maxIterations'])
+    w = float(data['w'])
+
+    try:
+        result, errors, num_iterations, radio = my_sor(coefficients, constants, initial_guess, tol, max_iter, w)
         response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
     except Exception as e:
         response = {'error': str(e)}

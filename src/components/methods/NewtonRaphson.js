@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const NewtonRaphson = () => {
-  const [funct, setFunct] = useState('x**2-2');
-  const [x0, setx0] = useState('-100');
+  const [funct, setFunct] = useState('log(sin(x)^2 + 1)-(1/2)');
+  const [x0, setx0] = useState('0.5');
   const [tolerance, setTolerance] = useState('1e-7');
   const [maxIterations, setMaxIterations] = useState('100');
   const [result, setResult] = useState(null);
@@ -56,7 +56,7 @@ const NewtonRaphson = () => {
             <button type="submit" style={{color: '#00ce7c'}}>run</button>
 
             <a className='button-graph'
-            href={"/graph?function=" + encodeURIComponent(funct.replace(/e\^\((.*?)\)/g, 'exp($1)'))}
+            href={"/graph?function=" + encodeURIComponent(funct.replace(/e\^(\w+)/g, 'exp($1)').replace(/e\^\((.*?)\)/g, 'exp($1)'))}
             target="_blank"
             rel="noopener noreferrer">
               graph {funct}

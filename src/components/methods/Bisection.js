@@ -64,7 +64,7 @@ const Bisection = () => {
             <button type="submit" style={{color: '#00ce7c'}}>run</button>
 
             <a className='button-graph'
-            href={"/graph?function=" + encodeURIComponent(funct.replace(/e\^\((.*?)\)/g, 'exp($1)'))}
+            href={"/graph?function=" + encodeURIComponent(funct.replace(/e\^(\w+)/g, 'exp($1)').replace(/e\^\((.*?)\)/g, 'exp($1)'))}
             target="_blank"
             rel="noopener noreferrer">
               graph {funct}

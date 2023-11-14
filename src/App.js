@@ -13,6 +13,7 @@ import FixedPoint from './components/methods/FixedPoint';
 import NewtonRaphson from './components/methods/NewtonRaphson';
 import Secant from './components/methods/Secant';
 import MultipleRoots from './components/methods/MultipleRoots';
+import Jacobi from './components/methods/Jacobi';
 
 
 const App = () => {
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/methods/secant" element={<Secant/>}/>
           <Route path='/methods/multiple-roots' element={<MultipleRoots/>}/>
           <Route path='/graph' element={<Graph/>}/>
+          <Route path='/methods/jacobi' element={<Jacobi/>}/>
         </Routes>
       </div>
     </Router>

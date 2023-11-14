@@ -1,5 +1,6 @@
-def my_secant(funct, x0, x1,  tol, max_iter):
-    f = lambda x: eval(funct)
+import math
+
+def my_secant(f, x0, x1,  tol, max_iter):
     i = 2
     E = 1e10
     iterations=[]

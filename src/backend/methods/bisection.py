@@ -1,7 +1,6 @@
+import math
 
-
-def my_bisection(funct, a, b, tol, max_iter):
-    f = lambda x: eval(funct)
+def my_bisection(f, a, b, tol, max_iter):
     iterations = []
     i = 1
     E = 1e10

@@ -1,8 +1,6 @@
+import math
 
-
-def my_fixed_point(funct, gunct, x0, tol, max_iter):
-    f = lambda x: eval(funct)
-    g = lambda x: eval(gunct)
+def my_fixed_point(f, g, x0, tol, max_iter):
     iterations = []
     i = 0
     E = 1e10

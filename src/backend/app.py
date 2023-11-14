@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
 import math
+import re
 from methods.bisection import my_bisection
 from methods.false_position import my_false_position
 from methods.fixed_point import my_fixed_point
@@ -17,7 +18,7 @@ def f_to_python(funct):
     funct = funct.replace('^', '**').replace('e', 'math.exp(1)').replace('sin', 'math.sin').replace('cos', 'math.cos').replace('tan', 'math.tan').replace('log', 'math.log')
     print(funct)
     f = lambda x: eval(funct)
-    print(f)
+    print(f(1))
     return f
 
 @app.route('/bisection', methods=['POST'])
@@ -56,7 +57,9 @@ def fixedpoint():
 @app.route('/newtonraphson', methods=['POST'])
 def newtonraphson():
     data = request.get_json()
-    f = f_to_python(data['funct'])
+    funct = data['funct'].replace('^', '**')
+    funct = re.sub(r'e\^(\([^)]+\)|[a-zA-Z0-9]+)', r'exp(\1)', funct)
+    f = funct
     x0 = float(data['x0'])
     tol = float(data['tolerance'])
     max_it = float(data['maxIterations'])

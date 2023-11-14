@@ -1,9 +1,11 @@
 import math
 import sympy as sp
+from sympy import log, sqrt, sin, cos, tan
 
 def my_newtonraphson(f, x0, tol, max_iter):
     x = sp.symbols('x')
-    f_sym = f(x)
+    f = eval(f)
+    f_sym = f
     df = sp.diff(f_sym, x)
     f_prima = sp.lambdify(x, df)
     iterations = []

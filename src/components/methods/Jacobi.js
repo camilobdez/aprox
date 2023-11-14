@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Graph from '../Graph';
 import axios from 'axios';
 
 const Jacobi = () => {
@@ -9,9 +8,9 @@ const Jacobi = () => {
   const [tolerance, setTolerance] = useState(0.5);
   const [maxIterations, setMaxIterations] = useState(100);
   const [result, setResult] = useState(null);
-  const [solution, setSolution] = useState(null);
   const [errors, setErrors] = useState(null);
   const [numIterations, setNumIterations] = useState(null); 
+  const [radio, setRadio] = useState(null); 
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -25,9 +24,9 @@ const Jacobi = () => {
       });
 
       setResult(response.data.result);
-      setSolution(response.data.solution);
       setErrors(response.data.errors);
       setNumIterations(response.data.numIterations);
+      setRadio(response.data.radio);
     } catch (error) {
       setResult('Error: Unable to calculate the result.');
     }
@@ -36,10 +35,9 @@ const Jacobi = () => {
   return (
     <div className='container-method'>
       <div className='title-method'><a className='method-title' >Jacobi</a></div>
-
       <div className='content-method'>
         <div className='form-container'>
-          
+      
           <form className='form' onSubmit={handleFormSubmit}>
           
             {/* Input for coefficients */}
@@ -93,61 +91,37 @@ const Jacobi = () => {
             </label>
 
             <button type="submit" style={{color: '#00ce7c'}}>run</button>
-            
+          
           </form>
         </div>
 
         <div className='result'>
           {result && (
-                  <table>
-                      <thead>
-                          <tr>
-                              <th>i</th>
-                              <th>E</th>
-                              <th>aprox</th>
-                              
-                          </tr>
-                      </thead>
-                      <tbody>
-                      <td>
-                          {numIterations.map((value) => (
-                              <React.Fragment >
-                                 
-                                  {value}
-                                  
-                                  <br />
-                              </React.Fragment>
-                          ))}
-                        </td>
-                        <td>
-                          {errors.map((value, index) => (
-                              <React.Fragment key={index}>
-                                 
-                                  {value}
-                                  
-                                  <br />
-                              </React.Fragment>
-                          ))}
-                        </td>
-                        <td>
-                          {result.map((value, index) => (
-                              <React.Fragment key={index}>
-                                 
-                                  {value}
-                                
-                                  <br />
-                              </React.Fragment>
-                          ))}
-                        </td>                       
-                      </tbody>
-                  </table>
-              )}
-            
+            <table>
+              <thead>
+                <tr>
+                  <th>i</th>
+                  <th>E</th>
+                  <th>aprox</th>
+                </tr>
+              </thead>
+              <tbody>
+                {numIterations.map((value, index) => (
+                  <tr key={index}>
+                    <td>{value}</td>
+                    <td>{errors[index]}</td>
+                    <td>{result[index]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>            
+            )}
+            <br />
+          <th>Radio espectral: {radio}</th>
         </div>
       </div>
-     
-
     </div>
   )
 }
+
 export default Jacobi;

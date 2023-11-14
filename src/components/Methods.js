@@ -45,7 +45,7 @@ const Methods = () => {
           <div>
             <ul>
                 <li><Link to="/methods/jacobi"><span>jacobi</span></Link></li>
-                <li><Link to="/methods/gauss-seidel"><span>gauss-seidel</span></Link></li>
+                <li><Link to="/methods/gauss_seidel"><span>gauss-seidel</span></Link></li>
                 <li><Link to="/methods/sor"><span>sor</span></Link></li>
             </ul>
           </div>

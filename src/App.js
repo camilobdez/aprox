@@ -14,6 +14,7 @@ import NewtonRaphson from './components/methods/NewtonRaphson';
 import Secant from './components/methods/Secant';
 import MultipleRoots from './components/methods/MultipleRoots';
 import Jacobi from './components/methods/Jacobi';
+import GaussSeidel from './components/methods/GaussSeidel';
 
 
 const App = () => {
@@ -34,6 +35,7 @@ const App = () => {
           <Route path='/methods/multiple-roots' element={<MultipleRoots/>}/>
           <Route path='/graph' element={<Graph/>}/>
           <Route path='/methods/jacobi' element={<Jacobi/>}/>
+          <Route path='/methods/gauss_seidel' element={<GaussSeidel/>}/>
         </Routes>
       </div>
     </Router>

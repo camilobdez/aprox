@@ -9,6 +9,7 @@ from methods.newton_raphson import my_newtonraphson
 from methods.secant import my_secant
 from methods.multiple_roots import my_multipleroots
 from methods.jacobi import my_jacobi
+from methods.gauss_seidel import my_gauss_seidel
 
 app = Flask(__name__)
 CORS(app)
@@ -85,7 +86,7 @@ def multipleroots():
     return jsonify({'result': result})
 
 @app.route('/jacobi', methods=['POST'])
-def jacobi_route():
+def jacobi():
     data = request.get_json()
     coefficients = np.array(data['coefficients'])
     constants = np.array(data['constants'])
@@ -94,16 +95,30 @@ def jacobi_route():
     max_iter = int(data['maxIterations'])
 
     try:
-        #result, sol, errors, num_iterations = my_jacobi(coefficients, constants, initial_guess, tol, max_iter)
-        #response = {'result': result.tolist(), 'solution': sol, 'errors': errors, 'numIterations': num_iterations}
-        result, errors, num_iterations = my_jacobi(coefficients, constants, initial_guess, tol, max_iter)
-        response = {'result': result, 'errors': errors, 'numIterations': num_iterations}
+        result, errors, num_iterations, radio = my_jacobi(coefficients, constants, initial_guess, tol, max_iter)
+        response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
     except Exception as e:
         response = {'error': str(e)}
 
     return jsonify(response)
 
 
+@app.route('/gauss_seidel', methods=['POST'])
+def gaussseidel():
+    data = request.get_json()
+    coefficients = np.array(data['coefficients'])
+    constants = np.array(data['constants'])
+    initial_guess = np.array(data['initialGuess'])
+    tol = float(data['tolerance'])
+    max_iter = int(data['maxIterations'])
+
+    try:
+        result, errors, num_iterations, radio = my_gauss_seidel(coefficients, constants, initial_guess, tol, max_iter)
+        response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
+    except Exception as e:
+        response = {'error': str(e)}
+
+    return jsonify(response)
 
 
 if __name__ == '__main__':

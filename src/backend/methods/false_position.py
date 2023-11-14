@@ -1,7 +1,6 @@
-import numpy as np
+import math
 
-def my_false_position(funct, a, b, tol, max_iter):
-    f = lambda x: eval(funct)
+def my_false_position(f, a, b, tol, max_iter):
     iterations = []
     i = 1
     E = 1e10

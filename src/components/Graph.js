@@ -18,7 +18,7 @@ const Graph = () => {
     });
   }, []);
 
-  return <div id="graph" style={{ width: '100%', height: '10px'}}></div>;
+  return <div id="graph"></div>;
 };
 
 export default Graph;

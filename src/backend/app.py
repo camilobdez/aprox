@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
+import math
 from methods.bisection import my_bisection
 from methods.false_position import my_false_position
 from methods.fixed_point import my_fixed_point
@@ -8,14 +9,22 @@ from methods.newton_raphson import my_newtonraphson
 from methods.secant import my_secant
 from methods.multiple_roots import my_multipleroots
 from methods.jacobi import my_jacobi
+from methods.gauss_seidel import my_gauss_seidel
 
 app = Flask(__name__)
 CORS(app)
 
+def f_to_python(funct):
+    funct = funct.replace('^', '**').replace('e', 'math.exp(1)').replace('sin', 'math.sin').replace('cos', 'math.cos').replace('tan', 'math.tan').replace('log', 'math.log')
+    print(funct)
+    f = lambda x: eval(funct)
+    print(f)
+    return f
+
 @app.route('/bisection', methods=['POST'])
 def bisection():
     data = request.get_json()
-    f = data['funct']
+    f = f_to_python(data['funct'])
     a = float(data['a'])
     b = float(data['b'])
     tol = float(data['tolerance'])
@@ -26,7 +35,7 @@ def bisection():
 @app.route('/falseposition', methods=['POST'])
 def falseposition():
     data = request.get_json()
-    f = data['funct']
+    f = f_to_python(data['funct'])
     a = float(data['a'])
     b = float(data['b'])
     tol = float(data['tolerance'])
@@ -37,8 +46,8 @@ def falseposition():
 @app.route('/fixedpoint', methods=['POST'])
 def fixedpoint():
     data = request.get_json()
-    f = data['funct']
-    g = data['gunct']
+    f = f_to_python(data['funct'])
+    g = f_to_python(data['gunct'])
     x0 = float(data['x0'])
     tol = float(data['tolerance'])
     max_it = float(data['maxIterations'])
@@ -48,7 +57,7 @@ def fixedpoint():
 @app.route('/newtonraphson', methods=['POST'])
 def newtonraphson():
     data = request.get_json()
-    f = data['funct']
+    f = f_to_python(data['funct'])
     x0 = float(data['x0'])
     tol = float(data['tolerance'])
     max_it = float(data['maxIterations'])
@@ -58,7 +67,7 @@ def newtonraphson():
 @app.route('/secant', methods=['POST'])
 def secant():
     data = request.get_json()
-    f = data['funct']
+    f = f_to_python(data['funct'])
     x0 = float(data['x0'])
     x1 = float(data['x1'])
     tol = float(data['tolerance'])
@@ -69,7 +78,7 @@ def secant():
 @app.route('/multipleroots', methods=['POST'])
 def multipleroots():
     data = request.get_json()
-    f = data['funct']
+    f = f_to_python(data['funct'])
     x0 = float(data['x0'])
     tol = float(data['tolerance'])
     max_it = float(data['maxIterations'])
@@ -77,7 +86,7 @@ def multipleroots():
     return jsonify({'result': result})
 
 @app.route('/jacobi', methods=['POST'])
-def jacobi_route():
+def jacobi():
     data = request.get_json()
     coefficients = np.array(data['coefficients'])
     constants = np.array(data['constants'])
@@ -86,16 +95,30 @@ def jacobi_route():
     max_iter = int(data['maxIterations'])
 
     try:
-        #result, sol, errors, num_iterations = my_jacobi(coefficients, constants, initial_guess, tol, max_iter)
-        #response = {'result': result.tolist(), 'solution': sol, 'errors': errors, 'numIterations': num_iterations}
-        result, errors, num_iterations = my_jacobi(coefficients, constants, initial_guess, tol, max_iter)
-        response = {'result': result, 'errors': errors, 'numIterations': num_iterations}
+        result, errors, num_iterations, radio = my_jacobi(coefficients, constants, initial_guess, tol, max_iter)
+        response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
     except Exception as e:
         response = {'error': str(e)}
 
     return jsonify(response)
 
 
+@app.route('/gauss_seidel', methods=['POST'])
+def gaussseidel():
+    data = request.get_json()
+    coefficients = np.array(data['coefficients'])
+    constants = np.array(data['constants'])
+    initial_guess = np.array(data['initialGuess'])
+    tol = float(data['tolerance'])
+    max_iter = int(data['maxIterations'])
+
+    try:
+        result, errors, num_iterations, radio = my_gauss_seidel(coefficients, constants, initial_guess, tol, max_iter)
+        response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
+    except Exception as e:
+        response = {'error': str(e)}
+
+    return jsonify(response)
 
 
 if __name__ == '__main__':

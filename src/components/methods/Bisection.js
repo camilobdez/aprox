@@ -3,9 +3,9 @@ import Graph from '../Graph';
 import axios from 'axios';
 
 const Bisection = () => {
-  const [funct, setFunct] = useState('x**2-2');
-  const [a, setA] = useState('-2');
-  const [b, setB] = useState('2');
+  const [funct, setFunct] = useState('log(sin(x)^2 + 1)-(1/2)');
+  const [a, setA] = useState('0');
+  const [b, setB] = useState('1');
   const [tolerance, setTolerance] = useState('1e-7');
   const [maxIterations, setMaxIterations] = useState('100');
   const [result, setResult] = useState(null);
@@ -64,7 +64,7 @@ const Bisection = () => {
             <button type="submit" style={{color: '#00ce7c'}}>run</button>
 
             <a className='button-graph'
-            href={"/graph?function=" + encodeURIComponent(funct)}
+            href={"/graph?function=" + encodeURIComponent(funct.replace(/e\^\((.*?)\)/g, 'exp($1)'))}
             target="_blank"
             rel="noopener noreferrer">
               graph {funct}

@@ -17,7 +17,7 @@ def f_to_python(funct):
     funct = funct.replace('^', '**').replace('e', 'math.exp(1)').replace('sin', 'math.sin').replace('cos', 'math.cos').replace('tan', 'math.tan').replace('log', 'math.log')
     print(funct)
     f = lambda x: eval(funct)
-    print(f(1))
+    print(f)
     return f
 
 @app.route('/bisection', methods=['POST'])

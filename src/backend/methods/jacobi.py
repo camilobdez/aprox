@@ -8,6 +8,8 @@ def my_jacobi(A, b, x0, tol, max_iter):
     c = 0
     error = tol + 1
     E = []
+    n = []
+    s = []
 
     while error > tol and c < max_iter:
         T = np.linalg.inv(D) @ (L + U)
@@ -19,10 +21,11 @@ def my_jacobi(A, b, x0, tol, max_iter):
 
         x0 = x1
         c += 1
+        n.append(c)
+        s.append(str(x0))
 
     if error < tol:
-        s = x0
-        n = c
+        #s = x0
         return s, E, n
     else:
         s = x0

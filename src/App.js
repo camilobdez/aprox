@@ -16,6 +16,8 @@ import MultipleRoots from './components/methods/MultipleRoots';
 import Jacobi from './components/methods/Jacobi';
 import GaussSeidel from './components/methods/GaussSeidel';
 import Sor from './components/methods/SOR';
+import Vandermonde from './components/methods/Vandermonde';
+import Newton from './components/methods/Newton';
 
 
 const App = () => {
@@ -38,6 +40,8 @@ const App = () => {
           <Route path='/methods/jacobi' element={<Jacobi/>}/>
           <Route path='/methods/gauss_seidel' element={<GaussSeidel/>}/>
           <Route path='/methods/sor' element={<Sor/>}/>
+          <Route path='/methods/vandermonde' element={<Vandermonde/>}/>
+          <Route path='/methods/newton' element={<Newton/>}/>
         </Routes>
       </div>
     </Router>

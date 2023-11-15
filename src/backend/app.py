@@ -12,6 +12,8 @@ from methods.multiple_roots import my_multipleroots
 from methods.jacobi import my_jacobi
 from methods.gauss_seidel import my_gauss_seidel
 from methods.sor import my_sor
+from methods.vandermonde import my_vandermonde
+from methods.newton import my_newton
 
 app = Flask(__name__)
 CORS(app)
@@ -138,6 +140,35 @@ def sor():
     try:
         result, errors, num_iterations, radio = my_sor(coefficients, constants, initial_guess, tol, max_iter, w)
         response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
+    except Exception as e:
+        response = {'error': str(e)}
+
+    return jsonify(response)
+
+
+@app.route('/vandermonde', methods=['POST'])
+def vandermonde():
+    data = request.get_json()
+    x = np.array(data['x'])
+    y = np.array(data['y'])
+
+    try:
+        result = my_vandermonde(x, y)
+        response = {'result': result}
+    except Exception as e:
+        response = {'error': str(e)}
+
+    return jsonify(response)
+
+@app.route('/newton', methods=['POST'])
+def newton():
+    data = request.get_json()
+    x_values = np.array(data['x'])
+    y_values = np.array(data['y'])
+
+    try:
+        result = my_newton(x_values, y_values)
+        response = {'result': result}
     except Exception as e:
         response = {'error': str(e)}
 

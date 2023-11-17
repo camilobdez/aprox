@@ -1,7 +1,7 @@
 import math
 import sympy as sp
 
-def my_multipleroots(f, x0, tol, max_iter):
+def my_multipleroots(f, x0, typeE, tol, max_iter):
     x = sp.symbols('x')
     f_sym = f(x)
     df = sp.diff(f_sym, x)

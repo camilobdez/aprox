@@ -1,6 +1,6 @@
 import math
 
-def my_bisection(f, a, b, tol, max_iter):
+def my_bisection(f, a, b, typeE, tol, max_iter):
     iterations = []
     i = 1
     E = 1e10

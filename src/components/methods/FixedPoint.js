@@ -5,6 +5,8 @@ const FixedPoint = () => {
   const [funct, setFunct] = useState('log(sin(x)^2 + 1)-(1/2)-x');
   const [gunct, setGunct] = useState('log(sin(x)^2 + 1)-(1/2)');
   const [x0, setx0] = useState('-0.5');
+  const [typeError, setTypeError] = useState('absolute');
+  const [lastTypeError, setLastTypeError] = useState('absolute');
   const [tolerance, setTolerance] = useState('1e-7');
   const [maxIterations, setMaxIterations] = useState('100');
   const [result, setResult] = useState(null);
@@ -16,11 +18,13 @@ const FixedPoint = () => {
               funct: funct,
               gunct: gunct,
               x0: x0,
+              typeError: typeError === 'relative' ? 1 : 0,
               tolerance: tolerance,
               maxIterations: maxIterations,
           });
 
           setResult(response.data.result);
+          setLastTypeError(typeError);
       } catch (error) {
           setResult('Error: Unable to calculate the result.');
       }
@@ -50,6 +54,14 @@ const FixedPoint = () => {
               <input type="number" value={x0} onChange={(e) => setx0(e.target.value)}/>
             </label>
 
+            <label>
+              error type 
+              <select value={typeError} onChange={(e) => setTypeError(e.target.value)}>
+                <option value="absolute">absolute</option>
+                <option value="relative">relative</option>
+              </select>
+            </label>
+            
             <label>
               tolerance 
               <input type="number"value={tolerance} onChange={(e) => setTolerance(e.target.value)}/>
@@ -88,7 +100,7 @@ const FixedPoint = () => {
                               <th>x_i</th>
                               <th>g(x_i)</th>
                               <th>f(x_i)</th>
-                              <th>E</th>
+                              <th>{lastTypeError  === "relative" ? "ε" : "E"}</th>
                           </tr>
                       </thead>
                       <tbody>

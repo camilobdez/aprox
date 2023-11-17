@@ -2,7 +2,7 @@ import math
 import sympy as sp
 from sympy import log, sqrt, sin, cos, tan
 
-def my_newtonraphson(f, x0, tol, max_iter):
+def my_newtonraphson(f, x0, typeE, tol, max_iter):
     x = sp.symbols('x')
     f = eval(f)
     f_sym = f

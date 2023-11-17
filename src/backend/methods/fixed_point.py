@@ -1,6 +1,6 @@
 import math
 
-def my_fixed_point(f, g, x0, tol, max_iter):
+def my_fixed_point(f, g, x0, typeE, tol, max_iter):
     iterations = []
     i = 0
     E = 1e10

@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const FixedPoint = () => {
-  const [funct, setFunct] = useState('x**2-x-1');
-  const [gunct, setGunct] = useState('1+1/x');
-  const [x0, setx0] = useState('2');
+  const [funct, setFunct] = useState('log(sin(x)^2 + 1)-(1/2)-x');
+  const [gunct, setGunct] = useState('log(sin(x)^2 + 1)-(1/2)');
+  const [x0, setx0] = useState('-0.5');
+  const [typeError, setTypeError] = useState('absolute');
+  const [lastTypeError, setLastTypeError] = useState('absolute');
   const [tolerance, setTolerance] = useState('1e-7');
   const [maxIterations, setMaxIterations] = useState('100');
   const [result, setResult] = useState(null);
@@ -16,11 +18,13 @@ const FixedPoint = () => {
               funct: funct,
               gunct: gunct,
               x0: x0,
+              typeError: typeError === 'relative' ? 1 : 0,
               tolerance: tolerance,
               maxIterations: maxIterations,
           });
 
           setResult(response.data.result);
+          setLastTypeError(typeError);
       } catch (error) {
           setResult('Error: Unable to calculate the result.');
       }
@@ -51,6 +55,14 @@ const FixedPoint = () => {
             </label>
 
             <label>
+              error type 
+              <select value={typeError} onChange={(e) => setTypeError(e.target.value)}>
+                <option value="absolute">absolute</option>
+                <option value="relative">relative</option>
+              </select>
+            </label>
+            
+            <label>
               tolerance 
               <input type="number"value={tolerance} onChange={(e) => setTolerance(e.target.value)}/>
             </label>
@@ -63,14 +75,14 @@ const FixedPoint = () => {
             <button type="submit" style={{color: '#00ce7c'}}>run</button>
 
             <a className='button-graph'
-            href={"/graph?function=" + encodeURIComponent(funct.replace(/e\^\((.*?)\)/g, 'exp($1)'))}
+            href={"/graph?function=" + encodeURIComponent(funct.replace(/e\^(\w+)/g, 'exp($1)').replace(/e\^\((.*?)\)/g, 'exp($1)'))}
             target="_blank"
             rel="noopener noreferrer">
               graph {funct}
             </a>
 
             <a className='button-graph'
-            href={"/graph?function=" + encodeURIComponent(gunct)}
+            href={"/graph?function=" + encodeURIComponent(gunct.replace(/e\^(\w+)/g, 'exp($1)').replace(/e\^\((.*?)\)/g, 'exp($1)'))}
             target="_blank"
             rel="noopener noreferrer">
               graph {gunct}
@@ -88,7 +100,7 @@ const FixedPoint = () => {
                               <th>x_i</th>
                               <th>g(x_i)</th>
                               <th>f(x_i)</th>
-                              <th>E</th>
+                              <th>{lastTypeError  === "relative" ? "ε" : "E"}</th>
                           </tr>
                       </thead>
                       <tbody>

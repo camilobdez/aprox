@@ -1,6 +1,6 @@
 import math
 
-def my_false_position(f, a, b, tol, max_iter):
+def my_false_position(f, a, b, typeE, tol, max_iter):
     iterations = []
     i = 1
     E = 1e10

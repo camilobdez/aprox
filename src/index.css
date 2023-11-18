@@ -125,8 +125,19 @@ nav ul li a {
 .form input {
   color:#00ce7c;
   display: block;
-  width: 100%; /* Adjust the width of the inputs as needed */
-  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form select {
+  color:#00ce7c;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form option {
+  color:#00ce7c;
 }
 
 .method-title {
@@ -146,6 +157,7 @@ nav ul li a {
   align-items: flex-start;
   text-decoration: none;
   font-size: 15px;
+  padding-top: 15px;
 }
 
 .result {

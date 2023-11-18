@@ -1,6 +1,6 @@
 import math
 
-def my_secant(f, x0, x1,  tol, max_iter):
+def my_secant(f, x0, x1, typeE,  tol, max_iter):
     i = 2
     E = 1e10
     iterations=[]

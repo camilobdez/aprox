@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
 import math
+import re
 from methods.bisection import my_bisection
 from methods.false_position import my_false_position
 from methods.fixed_point import my_fixed_point
@@ -23,7 +24,7 @@ def f_to_python(funct):
     funct = funct.replace('^', '**').replace('e', 'math.exp(1)').replace('sin', 'math.sin').replace('cos', 'math.cos').replace('tan', 'math.tan').replace('log', 'math.log')
     print(funct)
     f = lambda x: eval(funct)
-    print(f)
+    print(f(1))
     return f
 
 @app.route('/bisection', methods=['POST'])
@@ -32,9 +33,10 @@ def bisection():
     f = f_to_python(data['funct'])
     a = float(data['a'])
     b = float(data['b'])
+    typeE = int(data['typeError'])
     tol = float(data['tolerance'])
     max_it = float(data['maxIterations'])
-    result = my_bisection(f, a, b, tol, max_it)
+    result = my_bisection(f, a, b, typeE, tol, max_it)
     return jsonify({'result': result})
 
 @app.route('/falseposition', methods=['POST'])
@@ -43,9 +45,10 @@ def falseposition():
     f = f_to_python(data['funct'])
     a = float(data['a'])
     b = float(data['b'])
+    typeE = int(data['typeError'])
     tol = float(data['tolerance'])
     max_it = float(data['maxIterations'])
-    result = my_false_position(f, a, b, tol, max_it)
+    result = my_false_position(f, a, b, typeE, tol, max_it)
     return jsonify({'result': result})
 
 @app.route('/fixedpoint', methods=['POST'])
@@ -54,19 +57,23 @@ def fixedpoint():
     f = f_to_python(data['funct'])
     g = f_to_python(data['gunct'])
     x0 = float(data['x0'])
+    typeE = int(data['typeError'])
     tol = float(data['tolerance'])
     max_it = float(data['maxIterations'])
-    result = my_fixed_point(f, g, x0, tol, max_it)
+    result = my_fixed_point(f, g, x0, typeE, tol, max_it)
     return jsonify({'result': result})
 
 @app.route('/newtonraphson', methods=['POST'])
 def newtonraphson():
     data = request.get_json()
-    f = f_to_python(data['funct'])
+    funct = data['funct'].replace('^', '**')
+    funct = re.sub(r'e\^(\([^)]+\)|[a-zA-Z0-9]+)', r'exp(\1)', funct)
+    f = funct
     x0 = float(data['x0'])
+    typeE = int(data['typeError'])
     tol = float(data['tolerance'])
     max_it = float(data['maxIterations'])
-    result = my_newtonraphson(f, x0, tol, max_it)
+    result = my_newtonraphson(f, x0, typeE, tol, max_it)
     return jsonify({'result': result})
 
 @app.route('/secant', methods=['POST'])
@@ -75,9 +82,10 @@ def secant():
     f = f_to_python(data['funct'])
     x0 = float(data['x0'])
     x1 = float(data['x1'])
+    typeE = int(data['typeError'])
     tol = float(data['tolerance'])
     max_it = float(data['maxIterations'])
-    result = my_secant(f, x0, x1,  tol, max_it)
+    result = my_secant(f, x0, x1, typeE, tol, max_it)
     return jsonify({'result': result})
 
 @app.route('/multipleroots', methods=['POST'])
@@ -85,9 +93,10 @@ def multipleroots():
     data = request.get_json()
     f = f_to_python(data['funct'])
     x0 = float(data['x0'])
+    typeE = int(data['typeError'])
     tol = float(data['tolerance'])
     max_it = float(data['maxIterations'])
-    result = my_multipleroots(f, x0,  tol, max_it)
+    result = my_multipleroots(f, x0, typeE,  tol, max_it)
     return jsonify({'result': result})
 
 @app.route('/jacobi', methods=['POST'])

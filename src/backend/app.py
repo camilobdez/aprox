@@ -13,6 +13,8 @@ from methods.gauss_seidel import my_gauss_seidel
 from methods.sor import my_sor
 from methods.vandermonde import my_vandermonde
 from methods.newton import my_newton
+from methods.lagrange import my_lagrange
+from methods.spline import my_spline
 
 app = Flask(__name__)
 CORS(app)
@@ -157,6 +159,7 @@ def vandermonde():
 
     return jsonify(response)
 
+
 @app.route('/newton', methods=['POST'])
 def newton():
     data = request.get_json()
@@ -165,6 +168,37 @@ def newton():
 
     try:
         result = my_newton(x_values, y_values)
+        pol = my_lagrange(x_values, y_values)
+        response = {'result': result, 'pol': pol}
+    except Exception as e:
+        response = {'error': str(e)}
+
+    return jsonify(response)
+
+
+@app.route('/lagrange', methods=['POST'])
+def lagrange():
+    data = request.get_json()
+    x = np.array(data['x'])
+    y = np.array(data['y'])
+
+    try:
+        result = my_lagrange(x, y)
+        response = {'result': result}
+    except Exception as e:
+        response = {'error': str(e)}
+
+    return jsonify(response)
+
+
+@app.route('/spline', methods=['POST'])
+def spline():
+    data = request.get_json()
+    x = np.array(data['x'])
+    y = np.array(data['y'])
+
+    try:
+        result = my_spline(x, y)
         response = {'result': result}
     except Exception as e:
         response = {'error': str(e)}

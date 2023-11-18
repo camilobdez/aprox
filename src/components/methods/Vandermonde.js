@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Graph from '../Graph';
 import axios from 'axios';
 
 const Vandermonde = () => {
@@ -19,6 +20,23 @@ const Vandermonde = () => {
       setResult('Error: Unable to calculate the result.');
     }
   };
+
+  const getPolynomialExpression = () => {
+    const expressionTerms = result.map((value, index) => {
+      if (value !== 0) {
+        const sign = value < 0 || index === 0 ? '' : '+';
+        const term = `${value} * x^${result.length - 1 - index}`;
+        return `${sign}${term}`;
+      }
+      return null;
+    });
+  
+    return expressionTerms.join(' ') || '0';
+  };
+
+  const polynomialExpression = getPolynomialExpression();
+  const encodedPolynomialExpression = encodeURIComponent(polynomialExpression);
+  const graphUrl = `/graph?function=${encodedPolynomialExpression}`;
 
   return (
     <div className='container-method'>
@@ -49,7 +67,13 @@ const Vandermonde = () => {
             </label>
 
             <button type="submit" style={{ color: '#00ce7c' }}>run</button>
+            <br/>
 
+            <br/>
+            <a className='button-graph' href={graphUrl} target="_blank" rel="noopener noreferrer">
+              Graph Function
+            </a>
+          
           </form>
         </div>
 
@@ -72,13 +96,13 @@ const Vandermonde = () => {
           <th>
             Polinomio: 
             {result.map((value, index) => (
-                <React.Fragment key={index}> 
-                {value !== 0 && ( // Mostrar solo los términos no nulos
-                    <span>
-                    {value < 0 || index == 0 ? ` ${value}x^${result.length - 1 - index}` : ` + ${value}x^${result.length - 1 - index}`}
-                    </span>
-                )}
-                </React.Fragment>
+              <React.Fragment key={index}> 
+              {value !== 0 && ( // Mostrar solo los términos no nulos
+                <span>
+                {value < 0 || index == 0 ? ` ${value}x^${result.length - 1 - index}` : ` + ${value}x^${result.length - 1 - index}`}
+                </span>
+              )}
+              </React.Fragment>
             ))}
           </th>
         </div>

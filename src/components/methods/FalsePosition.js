@@ -9,7 +9,12 @@ const FalsePosition = () => {
   const [lastTypeError, setLastTypeError] = useState('absolute');
   const [tolerance, setTolerance] = useState('1e-7');
   const [maxIterations, setMaxIterations] = useState('100');
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState({
+    tabla: null,
+    message: null,
+  });
+  const [error, setError] = useState(null);
+  const [showHelp, setShowHelp] = useState(false);
 
   const handleFormSubmit = async (e) => {
       e.preventDefault();
@@ -23,11 +28,25 @@ const FalsePosition = () => {
               maxIterations: maxIterations,
           });
 
-          setResult(response.data.result);
-          setLastTypeError(typeError);
-      } catch (error) {
-          setResult('Error: Unable to calculate the result.');
-      }
+          if (response.data.error) {
+            setError(response.data.error);
+            setResult(null);
+          } else {
+            setResult({
+              tabla: response.data.tabla,
+              message: response.data.message,
+            });
+            setLastTypeError(typeError);
+            setError(null);
+          }
+        } catch (error) {
+          if (error.response && error.response.data && error.response.data.error) {
+            setError(error.response.data.error);
+          } else {
+            setError('unable to calculate the result.');
+          }
+          setResult(null);
+        }
   };
 
   return (
@@ -74,31 +93,54 @@ const FalsePosition = () => {
 
             <button type="submit" style={{color: '#00ce7c'}}>run</button>
 
+            <button type="button" style={{color: '#00ce7c'}} onClick={() => setShowHelp(!showHelp)}>
+              help
+            </button>
+
             <a className='button-graph'
             href={"/graph?function=" + encodeURIComponent(funct.replace(/e\^(\w+)/g, 'exp($1)').replace(/e\^\((.*?)\)/g, 'exp($1)'))}
             target="_blank"
             rel="noopener noreferrer">
               graph {funct}
             </a>
+
+            {showHelp && (
+              <div className='help-container'>
+                <ul>
+                  <li>the function must be continuous in [a, b]</li>
+                  <li>f(a)*f(b) {'<'} 0</li>
+                  <li>symbols defined: x, log (base e), e, sin, cos, tan, ^</li>
+                  <li>to multiply terms you must use  the '*' symbol</li>
+                </ul>
+              </div>
+              )}
             
           </form>
         </div>
 
         <div className='result'>
-          {result && (
+          {error && <div className='error-message'> error: {error} </div>}
+
+          {result && result.message &&
+          <div className='message'>
+            {result.message}
+          </div>
+          }
+
+          {result && result.tabla && result.tabla.length > 0 ? (
                   <table>
                       <thead>
                           <tr>
                               <th>i</th>
                               <th>a</th>
-                              <th>b</th>
                               <th>x_m</th>
+                              <th>b</th>
                               <th>f(x_m)</th>
                               <th>{lastTypeError  === "relative" ? "ε" : "E"}</th>
                           </tr>
                       </thead>
                       <tbody>
-                          {result.map((iteration, index) => (
+                          {result.tabla.map((iteration, index) => (
                               <tr key={index}>
                                   <td>{iteration[0]}</td>
                                   <td>{iteration[1]}</td>
@@ -110,7 +152,7 @@ const FalsePosition = () => {
                           ))}
                       </tbody>
                   </table>
-              )}
+              ):null}
           
         </div>
       </div>

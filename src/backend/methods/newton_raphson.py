@@ -1,24 +1,53 @@
 import math
 import sympy as sp
-from sympy import log, sqrt, sin, cos, tan
 
-def my_newtonraphson(f, x0, typeE, tol, max_iter):
-    x = sp.symbols('x')
-    f = eval(f)
-    f_sym = f
-    df = sp.diff(f_sym, x)
-    f_prima = sp.lambdify(x, df)
+def my_newtonraphson(funct, x0, typeE, tol, max_iter):
     iterations = []
-    i = 0
-    E = 1e10
-    while (E >= tol and i < max_iter):
-        f_x=f(x0)
-        current_iteration = [f"{i}", f"{x0:.10f}", f"{f_x:.4e}", f"{E:.4e}"]
+    
+    x = sp.symbols('x')
+    f = sp.sympify(funct)
+    f_xi = f.subs(x,x0)
+
+    if f_xi==0:
+        message = "the root was found for x = " + str(x0)
+    else:
+        df = sp.diff(f, x)
+        print(df)
+        x0 = float(x0)
+        f_xi = float(f_xi)
+        current_iteration = [0, f"{x0:.10f}", f"{f_xi:.4e}", ]
         iterations.append(current_iteration)
-        f_x=f(x0)
-        h = f_x/f_prima(x0)
-        x0 = x0-h
-        E = abs(f_x-f(x0))
-        i += 1
-        print(current_iteration)
-    return iterations
+        
+        xi=x0
+        df_xi=df.subs(x, xi)
+        i = 1
+        E = 1e19
+        while (E >= tol and i <= max_iter):
+            xi = xi - f_xi/df_xi
+            f_xi = f.subs(x,xi)
+            xi = float(xi)
+            f_xi = float(f_xi)
+            df_xi=df.subs(x, xi)
+
+            E = abs(xi-x0)
+            if typeE==1:
+                E = abs(E/xi)
+            
+            current_iteration = [f"{i}", f"{xi:.4e}", f"{f_xi:.4e}", f"{E:.4e}"]
+            iterations.append(current_iteration)
+            print(current_iteration)
+
+            if f_xi==0:
+                break
+            x0 = xi
+            i += 1
+
+        if f_xi==0:
+            message = "the root was found for x = " + str(xi)
+        elif E < tol:
+            message = "An approximation of the root was found for x = " + str(xi)
+        else:
+            message = "The method failed in ",i-1," iterations"
+        print(message)
+
+    return [iterations, message]

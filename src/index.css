@@ -157,7 +157,7 @@ nav ul li a {
   align-items: flex-start;
   text-decoration: none;
   font-size: 15px;
-  padding-top: 15px;
+  margin-top: 25px;
 }
 
 .result {
@@ -187,3 +187,36 @@ nav ul li a {
 .result tr > :first-child {
   color:#00ce7c; 
 }
+
+.error-message {
+  border: 2px solid #00ce7c;
+  padding: 10px;
+  background-color: black;
+  color: #00ce7c;
+  margin-top: 25px;
+  border-radius: 5px;
+}
+
+.message {
+  color:#c2fbe1;
+  padding-bottom: 20px;
+}
+
+.help-container {
+  border:1.5px solid #c2fbe1;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 14px;
+  margin-top: 40px;
+}
+
+.help-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.help-container li {
+  margin-bottom: 15px;
+  color: #c2fbe1;
+}
+

@@ -9,7 +9,12 @@ const Secant = () => {
   const [lastTypeError, setLastTypeError] = useState('absolute');
   const [tolerance, setTolerance] = useState('1e-7');
   const [maxIterations, setMaxIterations] = useState('100');
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState({
+    tabla: null,
+    message: null,
+  });
+  const [error, setError] = useState(null);
+  const [showHelp, setShowHelp] = useState(false);
 
   const handleFormSubmit = async (e) => {
       e.preventDefault();
@@ -23,11 +28,25 @@ const Secant = () => {
               maxIterations: maxIterations,
           });
 
-          setResult(response.data.result);
-          setLastTypeError(typeError);
-      } catch (error) {
-          setResult('Error: Unable to calculate the result.');
+      if (response.data.error) {
+        setError(response.data.error);
+        setResult(null);
+      } else {
+        setResult({
+          tabla: response.data.tabla,
+          message: response.data.message,
+        });
+        setLastTypeError(typeError);
+        setError(null);
       }
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('unable to calculate the result');
+      }
+      setResult(null);
+    }
   };
 
   return (
@@ -74,39 +93,62 @@ const Secant = () => {
 
             <button type="submit" style={{color: '#00ce7c'}}>run</button>
 
+            <button type="button" style={{color: '#00ce7c'}} onClick={() => setShowHelp(!showHelp)}>
+              help
+            </button>
+
             <a className='button-graph'
             href={"/graph?function=" + encodeURIComponent(funct.replace(/e\^(\w+)/g, 'exp($1)').replace(/e\^\((.*?)\)/g, 'exp($1)'))}
             target="_blank"
             rel="noopener noreferrer">
               graph {funct}
             </a>
+
+            {showHelp && (
+              <div className='help-container'>
+                <ul>
+                  <li>the function must be continuous and differentiable in [a,b]</li>
+                  <li>the two initial values should be chosen to lie close to the root</li>
+                  <li>symbols defined: x, log (base e), e, sin, cos, tan, ^</li>
+                  <li>to multiply terms you must use  the '*' symbol</li>
+                </ul>
+              </div>
+              )}
             
           </form>
         </div>
 
         <div className='result'>
-          {result && (
-                  <table>
-                      <thead>
-                          <tr>
-                              <th>i</th>
-                              <th>x_i</th>
-                              <th>f(x_i)</th>
-                              <th>{lastTypeError  === "relative" ? "ε" : "E"}</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          {result.map((iteration, index) => (
-                              <tr key={index}>
-                                  <td>{iteration[0]}</td>
-                                  <td>{iteration[1]}</td>
-                                  <td>{iteration[2]}</td>
-                                  <td>{iteration[3]}</td>
-                              </tr>
-                          ))}
-                      </tbody>
-                  </table>
-              )}
+          {error && <div className='error-message'> error: {error} </div>}
+
+          {result && result.message &&
+          <div className='message'>
+            {result.message}
+          </div>
+          }
+          
+          {result && result.tabla && result.tabla.length > 0 ? (
+              <table>
+                <thead>
+                  <tr>
+                    <th>i</th>
+                    <th>x_i</th>
+                    <th>f(x_i)</th>
+                    <th>{lastTypeError  === "relative" ? "ε" : "E"}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {result.tabla.map((iteration, index) => (
+                      <tr key={index}>
+                        <td>{iteration[0]}</td>
+                        <td>{iteration[1]}</td>
+                        <td>{iteration[2]}</td>
+                        <td>{iteration[3]}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            ) : null}
           
         </div>
       </div>

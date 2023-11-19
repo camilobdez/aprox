@@ -24,80 +24,211 @@ def f_to_python(funct):
     funct = funct.replace('^', '**').replace('e', 'math.exp(1)').replace('sin', 'math.sin').replace('cos', 'math.cos').replace('tan', 'math.tan').replace('log', 'math.log')
     print(funct)
     f = lambda x: eval(funct)
-    print(f(1))
     return f
 
 @app.route('/bisection', methods=['POST'])
 def bisection():
     data = request.get_json()
-    f = f_to_python(data['funct'])
-    a = float(data['a'])
-    b = float(data['b'])
-    typeE = int(data['typeError'])
-    tol = float(data['tolerance'])
-    max_it = float(data['maxIterations'])
-    result = my_bisection(f, a, b, typeE, tol, max_it)
-    return jsonify({'result': result})
+    try:
+        f = f_to_python(data['funct'])
+        a = float(data['a'])
+        b = float(data['b'])
+        typeE = int(data['typeError'])
+        tol = float(data['tolerance'])
+        max_it = float(data['maxIterations'])
+
+        if a >= b:
+            raise ValueError("left endpoint must be less than right endpoint")
+
+        if tol <= 0:
+            raise ValueError("tolerance must be > 0")
+        
+        if max_it <= 0:
+            raise ValueError("max number  of iterations must be > 0")
+        
+        print(f(a))
+        print(f(b))
+
+        if f(a)*f(b)>0:
+            raise ValueError("f(a)*f(b) must be < 0")
+
+        [tabla, message] = my_bisection(f, a, b, typeE, tol, max_it)
+        return jsonify({'tabla': tabla, 'message': message})
+
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+
+    except ZeroDivisionError:
+        return jsonify({'error': 'division by zero'}), 400
+
+    except Exception as e:
+        return jsonify({'error': 'not valid function expression'}), 500
+
 
 @app.route('/falseposition', methods=['POST'])
 def falseposition():
     data = request.get_json()
-    f = f_to_python(data['funct'])
-    a = float(data['a'])
-    b = float(data['b'])
-    typeE = int(data['typeError'])
-    tol = float(data['tolerance'])
-    max_it = float(data['maxIterations'])
-    result = my_false_position(f, a, b, typeE, tol, max_it)
-    return jsonify({'result': result})
+    try:
+        f = f_to_python(data['funct'])
+        a = float(data['a'])
+        b = float(data['b'])
+        typeE = int(data['typeError'])
+        tol = float(data['tolerance'])
+        max_it = float(data['maxIterations'])
+
+        if a >= b:
+            raise ValueError("left endpoint must be less than right endpoint")
+
+        if tol <= 0:
+            raise ValueError("tolerance must be > 0")
+        
+        if max_it <= 0:
+            raise ValueError("max number  of iterations must be > 0")
+        
+        print(f(a))
+        print(f(b))
+
+        if f(a)*f(b)>0:
+            raise ValueError("f(a)*f(b) must be < 0")
+
+        [tabla, message] = my_false_position(f, a, b, typeE, tol, max_it)
+        return jsonify({'tabla': tabla, 'message': message})
+
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+
+    except ZeroDivisionError:
+        return jsonify({'error': 'division by zero'}), 400
+
+    except Exception as e:
+        return jsonify({'error': 'not valid function expression'}), 500
 
 @app.route('/fixedpoint', methods=['POST'])
 def fixedpoint():
     data = request.get_json()
-    f = f_to_python(data['funct'])
-    g = f_to_python(data['gunct'])
-    x0 = float(data['x0'])
-    typeE = int(data['typeError'])
-    tol = float(data['tolerance'])
-    max_it = float(data['maxIterations'])
-    result = my_fixed_point(f, g, x0, typeE, tol, max_it)
-    return jsonify({'result': result})
+    try:
+        f = f_to_python(data['funct'])
+        g = f_to_python(data['gunct'])
+        x0 = float(data['x0'])
+        typeE = int(data['typeError'])
+        tol = float(data['tolerance'])
+        max_it = float(data['maxIterations'])
 
+        if tol <= 0:
+            raise ValueError("tolerance must be > 0")
+        
+        if max_it <= 0:
+            raise ValueError("max number  of iterations must be > 0")
+        
+        print(f(x0))
+        print(g(x0))
+
+        [tabla, message] = my_fixed_point(f, g, x0, typeE, tol, max_it)
+        return jsonify({'tabla': tabla, 'message': message})
+    
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+
+    except ZeroDivisionError:
+        return jsonify({'error': 'division by zero'}), 400         
+
+    except Exception as e:
+        return jsonify({'error': 'not valid function expression'}), 500
+        
 @app.route('/newtonraphson', methods=['POST'])
 def newtonraphson():
     data = request.get_json()
-    funct = data['funct'].replace('^', '**')
-    funct = re.sub(r'e\^(\([^)]+\)|[a-zA-Z0-9]+)', r'exp(\1)', funct)
-    f = funct
-    x0 = float(data['x0'])
-    typeE = int(data['typeError'])
-    tol = float(data['tolerance'])
-    max_it = float(data['maxIterations'])
-    result = my_newtonraphson(f, x0, typeE, tol, max_it)
-    return jsonify({'result': result})
+    try:
+        funct = data['funct']
+        funct = re.sub(r'e\^(\([^)]+\)|[a-zA-Z0-9]+)', r'exp(\1)', funct)
+        f = funct.replace('^', '**')
+        print(f)
+        x0 = float(data['x0'])
+        typeE = int(data['typeError'])
+        tol = float(data['tolerance'])
+        max_it = float(data['maxIterations'])
+
+        if tol <= 0:
+            raise ValueError("tolerance must be > 0")
+        
+        if max_it <= 0:
+            raise ValueError("max number  of iterations must be > 0")
+        
+        [tabla, message] = my_newtonraphson(f, x0, typeE, tol, max_it)
+        return jsonify({'tabla': tabla, 'message': message})
+    
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+
+    except ZeroDivisionError:
+        return jsonify({'error': 'division by zero'}), 400         
+
+    except Exception as e:
+        return jsonify({'error': 'not valid function expression'}), 500
 
 @app.route('/secant', methods=['POST'])
 def secant():
     data = request.get_json()
-    f = f_to_python(data['funct'])
-    x0 = float(data['x0'])
-    x1 = float(data['x1'])
-    typeE = int(data['typeError'])
-    tol = float(data['tolerance'])
-    max_it = float(data['maxIterations'])
-    result = my_secant(f, x0, x1, typeE, tol, max_it)
-    return jsonify({'result': result})
+    try:
+        f = f_to_python(data['funct'])
+        x0 = float(data['x0'])
+        x1 = float(data['x1'])
+        typeE = int(data['typeError'])
+        tol = float(data['tolerance'])
+        max_it = float(data['maxIterations'])
+
+        if x0==x1:
+            raise ValueError("x0 and x1 must be different")
+        if tol <= 0:
+            raise ValueError("tolerance must be > 0")
+        
+        if max_it <= 0:
+            raise ValueError("max number  of iterations must be > 0")
+        print(f(x0))
+        print(f(x1))
+        
+        [tabla, message] = my_secant(f, x0, x1, typeE, tol, max_it)
+        return jsonify({'tabla': tabla, 'message': message})
+    
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+
+    except ZeroDivisionError:
+        return jsonify({'error': 'division by zero'}), 400         
+
+    except Exception as e:
+        return jsonify({'error': 'not valid function expression'}), 500
 
 @app.route('/multipleroots', methods=['POST'])
 def multipleroots():
     data = request.get_json()
-    f = f_to_python(data['funct'])
-    x0 = float(data['x0'])
-    typeE = int(data['typeError'])
-    tol = float(data['tolerance'])
-    max_it = float(data['maxIterations'])
-    result = my_multipleroots(f, x0, typeE,  tol, max_it)
-    return jsonify({'result': result})
+    try:
+        funct = data['funct']
+        funct = re.sub(r'e\^(\([^)]+\)|[a-zA-Z0-9]+)', r'exp(\1)', funct)
+        f = funct.replace('^', '**')
+        print(f)
+        x0 = float(data['x0'])
+        typeE = int(data['typeError'])
+        tol = float(data['tolerance'])
+        max_it = float(data['maxIterations'])
+
+        if tol <= 0:
+            raise ValueError("tolerance must be > 0")
+        
+        if max_it <= 0:
+            raise ValueError("max number  of iterations must be > 0")
+        
+        [tabla, message] = my_multipleroots(f, x0, typeE, tol, max_it)
+        return jsonify({'tabla': tabla, 'message': message})
+    
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+
+    except ZeroDivisionError:
+        return jsonify({'error': 'division by zero'}), 400         
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/jacobi', methods=['POST'])
 def jacobi():

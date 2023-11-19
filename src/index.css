@@ -220,3 +220,20 @@ nav ul li a {
   color: #c2fbe1;
 }
 
+.home {
+  align-self: center;
+  align-content: center;
+  align-items: center;
+  padding-top: 20px;
+  text-align: center;
+}
+
+.home p {
+  padding-top: 10px;
+}
+
+.home img {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+

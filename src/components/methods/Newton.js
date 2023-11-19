@@ -5,7 +5,7 @@ const Newton = () => {
   const [x, setX] = useState([1, 3, 4, 5]);
   const [y, setY] = useState([5, 7, 7, 9]);
   const [result, setResult] = useState([]);
-  const polynomialTerms = [];
+  const [pol, setPol] = useState([]);
 
 
   const handleFormSubmit = async (e) => {
@@ -17,10 +17,28 @@ const Newton = () => {
       });
 
       setResult(response.data.result);
+      setPol(response.data.pol);
     } catch (error) {
       setResult('Error: Unable to calculate the result.');
     }
   };
+
+  const getPolynomialExpression = () => {
+    const expressionTerms = pol.map((value, index) => {
+      if (value !== 0) {
+        const sign = value < 0 || index === 0 ? '' : '+';
+        const term = `${value} * x^${pol.length - 1 - index}`;
+        return `${sign}${term}`;
+      }
+      return null;
+    });
+  
+    return expressionTerms.join(' ') || '0';
+  };
+
+  const polynomialExpression = getPolynomialExpression();
+  const encodedPolynomialExpression = encodeURIComponent(polynomialExpression);
+  const graphUrl = `/graph?function=${encodedPolynomialExpression}`;
 
   return (
     <div className='container-method'>
@@ -51,6 +69,12 @@ const Newton = () => {
             </label>
 
             <button type="submit" style={{ color: '#00ce7c' }}>run</button>
+            <br/>
+            
+            <br/>
+            <a className='button-graph' href={graphUrl} target="_blank" rel="noopener noreferrer">
+              Graph Function
+            </a>
 
           </form>
         </div>

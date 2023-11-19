@@ -14,6 +14,8 @@ from methods.gauss_seidel import my_gauss_seidel
 from methods.sor import my_sor
 from methods.vandermonde import my_vandermonde
 from methods.newton import my_newton
+from methods.lagrange import my_lagrange
+from methods.spline import my_spline
 
 app = Flask(__name__)
 CORS(app)
@@ -234,11 +236,12 @@ def jacobi():
     coefficients = np.array(data['coefficients'])
     constants = np.array(data['constants'])
     initial_guess = np.array(data['initialGuess'])
+    typeE = int(data['typeError'])
     tol = float(data['tolerance'])
     max_iter = int(data['maxIterations'])
 
     try:
-        result, errors, num_iterations, radio = my_jacobi(coefficients, constants, initial_guess, tol, max_iter)
+        result, errors, num_iterations, radio = my_jacobi(coefficients, constants, initial_guess, tol, typeE, max_iter)
         response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
     except Exception as e:
         response = {'error': str(e)}
@@ -288,7 +291,7 @@ def vandermonde():
     data = request.get_json()
     x = np.array(data['x'])
     y = np.array(data['y'])
-
+    
     try:
         result = my_vandermonde(x, y)
         response = {'result': result}
@@ -296,6 +299,7 @@ def vandermonde():
         response = {'error': str(e)}
 
     return jsonify(response)
+
 
 @app.route('/newton', methods=['POST'])
 def newton():
@@ -305,6 +309,37 @@ def newton():
 
     try:
         result = my_newton(x_values, y_values)
+        pol = my_lagrange(x_values, y_values)
+        response = {'result': result, 'pol': pol}
+    except Exception as e:
+        response = {'error': str(e)}
+
+    return jsonify(response)
+
+
+@app.route('/lagrange', methods=['POST'])
+def lagrange():
+    data = request.get_json()
+    x = np.array(data['x'])
+    y = np.array(data['y'])
+
+    try:
+        result = my_lagrange(x, y)
+        response = {'result': result}
+    except Exception as e:
+        response = {'error': str(e)}
+
+    return jsonify(response)
+
+
+@app.route('/spline', methods=['POST'])
+def spline():
+    data = request.get_json()
+    x = np.array(data['x'])
+    y = np.array(data['y'])
+
+    try:
+        result = my_spline(x, y)
         response = {'result': result}
     except Exception as e:
         response = {'error': str(e)}

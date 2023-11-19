@@ -18,6 +18,8 @@ import GaussSeidel from './components/methods/GaussSeidel';
 import Sor from './components/methods/SOR';
 import Vandermonde from './components/methods/Vandermonde';
 import Newton from './components/methods/Newton';
+import Lagrange from './components/methods/Lagrange';
+import Spline from './components/methods/Spline';
 
 
 const App = () => {
@@ -42,6 +44,8 @@ const App = () => {
           <Route path='/methods/sor' element={<Sor/>}/>
           <Route path='/methods/vandermonde' element={<Vandermonde/>}/>
           <Route path='/methods/newton' element={<Newton/>}/>
+          <Route path='/methods/lagrange' element={<Lagrange/>}/>
+          <Route path='/methods/spline' element={<Spline/>}/>
         </Routes>
       </div>
     </Router>

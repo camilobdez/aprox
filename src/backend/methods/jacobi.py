@@ -1,6 +1,6 @@
 import numpy as np
 
-def my_jacobi(A, b, x0, tol, max_iter):
+def my_jacobi(A, b, x0, tol, typeE, max_iter):
     D = np.diag(np.diag(A))
     L = -np.tril(A, k=-1)
     U = -np.triu(A, k=1)
@@ -17,8 +17,13 @@ def my_jacobi(A, b, x0, tol, max_iter):
         C = np.linalg.inv(D) @ b
         x1 = T @ x0 + C
         radio = np.max(np.abs(np.linalg.eigvals(T)))
-        
-        E.append(np.linalg.norm(x1 - x0, np.inf))
+
+        if typeE == 0:
+            E.append(np.linalg.norm(x1 - x0, np.inf))
+        else: 
+            #E.append(np.linalg.norm((x1 - x0)/x1, np.inf))
+            E.append(np.linalg.norm((x1 - x0), np.inf)/np.linalg.norm(x1, np.inf))
+
         error = E[-1]
 
         x0 = x1

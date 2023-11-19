@@ -5,6 +5,7 @@ const Jacobi = () => {
   const [coefficients, setCoefficients] = useState([[10, 5, 6], [-2, 11, 1], [-1, -1, 4]]);
   const [constants, setConstants] = useState([15, 15, 20]);
   const [initialGuess, setInitialGuess] = useState([1, 1, 1]);
+  const [typeError, setTypeError] = useState('absolute');
   const [tolerance, setTolerance] = useState(0.5);
   const [maxIterations, setMaxIterations] = useState(100);
   const [result, setResult] = useState(null);
@@ -19,10 +20,11 @@ const Jacobi = () => {
         coefficients: coefficients,
         constants: constants,
         initialGuess: initialGuess,
+        typeError: typeError === 'relative' ? 1 : 0,
         tolerance: tolerance,
         maxIterations: maxIterations,
       });
-
+        
       setResult(response.data.result);
       setErrors(response.data.errors);
       setNumIterations(response.data.numIterations);
@@ -73,6 +75,15 @@ const Jacobi = () => {
                 onChange={(e) => setInitialGuess(e.target.value.split(',').map((val) => parseFloat(val)))}
               />
             </label>
+            
+            {/* Input for type error */}
+            <label>
+              error type 
+              <select value={typeError} onChange={(e) => setTypeError(e.target.value)}>
+                <option value="absolute">absolute</option>
+                <option value="relative">relative</option>
+              </select>
+            </label>
 
             {/* Input for tolerance */}
             <label>
@@ -93,7 +104,16 @@ const Jacobi = () => {
             <button type="submit" style={{color: '#00ce7c'}}>run</button>
           
           </form>
+          <br/>
+
+          <div style={{color: '#c2fbe1', fontSize: '16px', width: '160%', border: '0.1px solid #ccc', padding: '6px'}}>
+            <th>Notas:</th><br/>
+            
+            [1] Si el radio espectral es {'>='} 1, el metodo no necesariamente converge <br/><br/>
+            [2] Para ingresar la mátriz separe las filas con ';' como en Matlab <br/>
+          </div>
         </div>
+        
 
         <div className='result'>
           {result && (

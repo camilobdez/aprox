@@ -105,11 +105,12 @@ def jacobi():
     coefficients = np.array(data['coefficients'])
     constants = np.array(data['constants'])
     initial_guess = np.array(data['initialGuess'])
+    typeE = int(data['typeError'])
     tol = float(data['tolerance'])
     max_iter = int(data['maxIterations'])
 
     try:
-        result, errors, num_iterations, radio = my_jacobi(coefficients, constants, initial_guess, tol, max_iter)
+        result, errors, num_iterations, radio = my_jacobi(coefficients, constants, initial_guess, tol, typeE, max_iter)
         response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
     except Exception as e:
         response = {'error': str(e)}
@@ -159,7 +160,7 @@ def vandermonde():
     data = request.get_json()
     x = np.array(data['x'])
     y = np.array(data['y'])
-
+    
     try:
         result = my_vandermonde(x, y)
         response = {'result': result}

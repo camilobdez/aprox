@@ -5,12 +5,14 @@ const GaussSeidel = () => {
   const [coefficients, setCoefficients] = useState([[10, 5, 6], [-2, 11, 1], [-1, -1, 4]]);
   const [constants, setConstants] = useState([15, 15, 20]);
   const [initialGuess, setInitialGuess] = useState([1, 1, 1]);
+  const [typeError, setTypeError] = useState('absolute');
   const [tolerance, setTolerance] = useState(0.5);
   const [maxIterations, setMaxIterations] = useState(100);
   const [result, setResult] = useState(null);
   const [errors, setErrors] = useState(null);
   const [numIterations, setNumIterations] = useState(null); 
-  const [radio, setRadio] = useState(null); 
+  const [radio, setRadio] = useState(null);
+  const [showHelp, setShowHelp] = useState(false);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -19,6 +21,7 @@ const GaussSeidel = () => {
         coefficients: coefficients,
         constants: constants,
         initialGuess: initialGuess,
+        typeError: typeError === 'relative' ? 1 : 0,
         tolerance: tolerance,
         maxIterations: maxIterations,
       });
@@ -42,13 +45,17 @@ const GaussSeidel = () => {
           
             {/* Input for coefficients */}
             <label>
-              Coefficients (separate values with commas):
+              Coefficients:
               <input
                 type='text'
-                value={coefficients.map((row) => row.join(',')).join(';')}
+                value={coefficients
+                  .map((row) => row.map((val) => (isNaN(val) ? '' : val.toString())).join(','))
+                  .join(';')}
                 onChange={(e) =>
                   setCoefficients(
-                    e.target.value.split(';').map((row) => row.split(',').map((val) => parseFloat(val)))
+                    e.target.value.split(';').map((row) =>
+                      row.split(',').map((val) => (val.includes('.') ? parseFloat(val) : parseInt(val)))
+                    )
                   )
                 }
               />
@@ -56,22 +63,39 @@ const GaussSeidel = () => {
 
             {/* Input for constants */}
             <label>
-              Constants (separate values with commas):
+              Constants:
               <input
                 type='text'
-                value={constants.join(',')}
-                onChange={(e) => setConstants(e.target.value.split(',').map((val) => parseFloat(val)))}
+                value={constants.map((val) => (isNaN(val) ? '' : val)).join(',')}
+                onChange={(e) =>
+                  setConstants(
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                  )
+                }
               />
             </label>
 
             {/* Input for initial guess */}
             <label>
-              Initial Guess (separate values with commas):
+              Initial guess:
               <input
                 type='text'
-                value={initialGuess.join(',')}
-                onChange={(e) => setInitialGuess(e.target.value.split(',').map((val) => parseFloat(val)))}
+                value={initialGuess.map((val) => (isNaN(val) ? '' : val)).join(',')}
+                onChange={(e) =>
+                  setInitialGuess(
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                  )
+                }
               />
+            </label>
+
+            {/* Input for type error */}
+            <label>
+              Error type 
+              <select value={typeError} onChange={(e) => setTypeError(e.target.value)}>
+                <option value="absolute">absolute</option>
+                <option value="relative">relative</option>
+              </select>
             </label>
 
             {/* Input for tolerance */}
@@ -82,7 +106,7 @@ const GaussSeidel = () => {
 
             {/* Input for max iterations */}
             <label>
-              Max Iterations
+              Max iterations
               <input
                 type='number'
                 value={maxIterations}
@@ -91,7 +115,22 @@ const GaussSeidel = () => {
             </label>
 
             <button type="submit" style={{color: '#00ce7c'}}>run</button>
-          
+            
+            <button type="button" style={{color: '#00ce7c'}} onClick={() => setShowHelp(!showHelp)}>
+              help
+            </button>
+
+            {showHelp && (
+              <div className='help-container'>
+                <ul>
+                  <li>[1] Si el radio espectral es {'>='} 1, el metodo no necesariamente converge</li>
+                  <li>[2] Para ingresar la mátriz separe las filas con ';' y los valores con ',' como en Matlab</li>
+                  <li>[3] El método de Gauss-Seidel converge si la matriz es estrictamente diagonalmente dominante.</li>
+                  <li>[4] Se usó la norma infinita para calcular el error.</li>
+                </ul>
+              </div>
+              )}
+
           </form>
         </div>
 

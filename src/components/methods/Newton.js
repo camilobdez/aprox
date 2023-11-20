@@ -6,7 +6,7 @@ const Newton = () => {
   const [y, setY] = useState([5, 7, 7, 9]);
   const [result, setResult] = useState([]);
   const [pol, setPol] = useState([]);
-
+  const [showHelp, setShowHelp] = useState(false);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -50,31 +50,49 @@ const Newton = () => {
 
             {/* Input for x values */}
             <label>
-              x Values (separate values with commas):
+              X values:
               <input
                 type='text'
-                value={x.join(',')}
-                onChange={(e) => setX(e.target.value.split(',').map((val) => parseFloat(val)))}
+                value={x.map((val) => (isNaN(val) ? '' : val)).join(',')}
+                onChange={(e) =>
+                  setX(
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                  )
+                }
               />
             </label>
 
             {/* Input for y values */}
             <label>
-              y Values (separate values with commas):
+              Y values:
               <input
                 type='text'
-                value={y.join(',')}
-                onChange={(e) => setY(e.target.value.split(',').map((val) => parseFloat(val)))}
+                value={y.map((val) => (isNaN(val) ? '' : val)).join(',')}
+                onChange={(e) =>
+                  setY(
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                  )
+                }
               />
             </label>
 
             <button type="submit" style={{ color: '#00ce7c' }}>run</button>
-            <br/>
             
-            <br/>
+            <button type="button" style={{color: '#00ce7c'}} onClick={() => setShowHelp(!showHelp)}>
+              help
+            </button>
+            
             <a className='button-graph' href={graphUrl} target="_blank" rel="noopener noreferrer">
               Graph Function
             </a>
+            
+            {showHelp && (
+              <div className='help-container'>
+                <ul>
+                  <li>[1] Ingresa las coordenadas separadas por ','</li>
+                </ul>
+              </div>
+              )}
 
           </form>
         </div>

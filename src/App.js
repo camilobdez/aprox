@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Routes, Route } from 'react-router-dom'; // Updated import statements
-import { Redirect } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Methods from './components/Methods';
 import Help from './components/Help';

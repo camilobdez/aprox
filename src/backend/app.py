@@ -2,6 +2,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
 import math
+from flask import Flask, render_template, send_file
+import matplotlib.pyplot as plt
+import io
 import re
 from methods.bisection import my_bisection
 from methods.false_position import my_false_position
@@ -25,6 +28,22 @@ def f_to_python(funct):
     print(funct)
     f = lambda x: eval(funct)
     return f
+
+@app.route('/generate_plot', methods=['GET'])
+def generate_plot():
+    plt.plot([1, 2, 3, 4], [1, 4, 9, 16])
+    plt.xlabel('X-axis')
+    plt.ylabel('Y-axis')
+    plt.title('Generated Plot')
+
+    image_stream = io.BytesIO()
+    plt.savefig(image_stream, format='png')
+    image_stream.seek(0)
+
+    return send_file(image_stream, mimetype='image/png')
+
+
+
 
 @app.route('/bisection', methods=['POST'])
 def bisection():

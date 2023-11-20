@@ -1,10 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Spline = () => {
   const [x, setX] = useState([1, 3, 4, 5]);
   const [y, setY] = useState([5, 7, 7, 9]);
   const [result, setResult] = useState([]);
+  const [plotImage, setPlotImage] = useState(null);
+
+  useEffect(() => {
+    // Fetch the plot image from the Flask server
+    fetch('http://localhost:5000/generate_plot')  // Update the URL to match your Flask server
+        .then((response) => response.blob())
+        .then((blob) => {
+            // Create a blob URL for the image
+            const imageSrc = URL.createObjectURL(blob);
+            setPlotImage(imageSrc);
+        })
+        .catch((error) => {
+            console.error('Error fetching plot image:', error);
+        });
+}, []);
+
+
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -53,6 +70,8 @@ const Spline = () => {
           </form>
         </div>
 
+        {plotImage && <img src={plotImage} alt="Generated Plot" />}
+
         <div className='result'>
           {result && (
             <table>
@@ -81,6 +100,7 @@ const Spline = () => {
                 </React.Fragment>
             ))}
           </th>
+
         </div>
       </div>
     </div>

@@ -9,5 +9,5 @@ def my_vandermonde(x, y):
         return coef.tolist()
     
     except np.linalg.LinAlgError as e:
-        print(f"Error al resolver el sistema: {e}")
+        raise ValueError(f"Error al resolver el sistema")
         return ["Error al resolver el sistema"]

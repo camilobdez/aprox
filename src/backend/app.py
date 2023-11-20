@@ -283,119 +283,171 @@ def multipleroots():
 @app.route('/jacobi', methods=['POST'])
 def jacobi():
     data = request.get_json()
-    coefficients = np.array(data['coefficients'])
-    constants = np.array(data['constants'])
-    initial_guess = np.array(data['initialGuess'])
-    typeE = int(data['typeError'])
-    tol = float(data['tolerance'])
-    max_iter = int(data['maxIterations'])
-
     try:
+        coefficients = np.array(data['coefficients'], dtype=float)
+        constants = np.array(data['constants'], dtype=float)
+        initial_guess = np.array(data['initialGuess'], dtype=float)
+        typeE = int(data['typeError'])
+        tol = float(data['tolerance'])
+        max_iter = int(data['maxIterations'])
+
+        if tol <= 0:
+            raise ValueError("tolerance must be > 0")
+        
+        if max_iter <= 0:
+            raise ValueError("max number  of iterations must be > 0")
+
         result, errors, num_iterations, radio = my_jacobi(coefficients, constants, initial_guess, tol, typeE, max_iter)
         response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
+        return jsonify(response)
+    
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+    
     except Exception as e:
-        response = {'error': str(e)}
-
-    return jsonify(response)
+        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/gauss_seidel', methods=['POST'])
 def gaussseidel():
     data = request.get_json()
-    coefficients = np.array(data['coefficients'])
-    constants = np.array(data['constants'])
-    initial_guess = np.array(data['initialGuess'])
-    tol = float(data['tolerance'])
-    max_iter = int(data['maxIterations'])
-
     try:
-        result, errors, num_iterations, radio = my_gauss_seidel(coefficients, constants, initial_guess, tol, max_iter)
+        coefficients = np.array(data['coefficients'], dtype=float)
+        constants = np.array(data['constants'], dtype=float)
+        initial_guess = np.array(data['initialGuess'], dtype=float)
+        typeE = int(data['typeError'])
+        tol = float(data['tolerance'])
+        max_iter = int(data['maxIterations'])
+
+        if tol <= 0:
+            raise ValueError("tolerance must be > 0")
+        
+        if max_iter <= 0:
+            raise ValueError("max number  of iterations must be > 0")
+
+        result, errors, num_iterations, radio = my_gauss_seidel(coefficients, constants, initial_guess, tol, typeE, max_iter)
         response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
+        return jsonify(response)
+    
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+    
     except Exception as e:
-        response = {'error': str(e)}
-
-    return jsonify(response)
-
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/sor', methods=['POST'])
 def sor():
     data = request.get_json()
-    coefficients = np.array(data['coefficients'])
-    constants = np.array(data['constants'])
-    initial_guess = np.array(data['initialGuess'])
-    tol = float(data['tolerance'])
-    max_iter = int(data['maxIterations'])
-    w = float(data['w'])
-
     try:
-        result, errors, num_iterations, radio = my_sor(coefficients, constants, initial_guess, tol, max_iter, w)
-        response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
-    except Exception as e:
-        response = {'error': str(e)}
+        coefficients = np.array(data['coefficients'], dtype=float)
+        constants = np.array(data['constants'], dtype=float)
+        initial_guess = np.array(data['initialGuess'], dtype=float)
+        typeE = int(data['typeError'])
+        tol = float(data['tolerance'])
+        max_iter = int(data['maxIterations'])
+        w = float(data['w'])
 
-    return jsonify(response)
+        if tol <= 0:
+            raise ValueError("tolerance must be > 0")
+        
+        if max_iter <= 0:
+            raise ValueError("max number  of iterations must be > 0")
+
+        result, errors, num_iterations, radio = my_sor(coefficients, constants, initial_guess, tol, typeE, max_iter, w)
+        response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
+        return jsonify(response)
+    
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/vandermonde', methods=['POST'])
 def vandermonde():
     data = request.get_json()
-    x = np.array(data['x'])
-    y = np.array(data['y'])
-    
     try:
+        x = np.array(data['x'], dtype=float)
+        y = np.array(data['y'], dtype=float)
+
+        if len(x) != len(y):
+            raise ValueError("El tamaño de X y Y debería ser igual")
+    
         result = my_vandermonde(x, y)
         response = {'result': result}
+        return jsonify(response)
+    
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+    
     except Exception as e:
         response = {'error': str(e)}
-
-    return jsonify(response)
 
 
 @app.route('/newton', methods=['POST'])
 def newton():
     data = request.get_json()
-    x_values = np.array(data['x'])
-    y_values = np.array(data['y'])
-
     try:
+        x_values = np.array(data['x'], dtype=float)
+        y_values = np.array(data['y'], dtype=float)
+
+        if len(x_values) != len(y_values):
+            raise ValueError("El tamaño de X y Y debería ser igual")
+
         result = my_newton(x_values, y_values)
         pol = my_lagrange(x_values, y_values)
         response = {'result': result, 'pol': pol}
+        return jsonify(response)
+    
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+    
     except Exception as e:
         response = {'error': str(e)}
-
-    return jsonify(response)
 
 
 @app.route('/lagrange', methods=['POST'])
 def lagrange():
     data = request.get_json()
-    x = np.array(data['x'])
-    y = np.array(data['y'])
-
     try:
+        x = np.array(data['x'], dtype=float)
+        y = np.array(data['y'], dtype=float)
+
+        if len(x) != len(y):
+            raise ValueError("El tamaño de X y Y debería ser igual")
+    
         result = my_lagrange(x, y)
         response = {'result': result}
+        return jsonify(response)
+    
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+    
     except Exception as e:
         response = {'error': str(e)}
-
-    return jsonify(response)
 
 
 @app.route('/spline', methods=['POST'])
 def spline():
     data = request.get_json()
-    x = np.array(data['x'])
-    y = np.array(data['y'])
-    d = int(data['d'])
-
     try:
+        x = np.array(data['x'], dtype=float)
+        y = np.array(data['y'], dtype=float)
+        d = int(data['d'])
+
+        if len(x) != len(y):
+            raise ValueError("El tamaño de X y Y debería ser igual")
+
         result = my_spline(x, y, d)
         response = {'result': result}
+        return jsonify(response)
+    
+    except ValueError as ve:
+        return jsonify({'error': str(ve)}), 400
+    
     except Exception as e:
         response = {'error': str(e)}
-
-    return jsonify(response)
 
 
 if __name__ == '__main__':

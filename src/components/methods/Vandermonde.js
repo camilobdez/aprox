@@ -6,6 +6,7 @@ const Vandermonde = () => {
   const [x, setX] = useState([1, 3, 4, 5]);
   const [y, setY] = useState([5, 7, 7, 9]);
   const [result, setResult] = useState([]);
+  const [error, setError] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
 
   const handleFormSubmit = async (e) => {
@@ -15,10 +16,21 @@ const Vandermonde = () => {
         x: x,
         y: y,
       });
-
-      setResult(response.data.result);
+      
+      if (response.data.error) {
+        setError(response.data.error);
+        setResult(null);
+      } else {
+        setResult(response.data.result);
+        setError(null);
+      }
     } catch (error) {
-      setResult('Error: Unable to calculate the result.');
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('unable to calculate the result');
+      }
+      setResult([]);
     }
   };
 
@@ -55,7 +67,7 @@ const Vandermonde = () => {
                 value={x.map((val) => (isNaN(val) ? '' : val)).join(',')}
                 onChange={(e) =>
                   setX(
-                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : val))
                   )
                 }
               />
@@ -69,7 +81,7 @@ const Vandermonde = () => {
                 value={y.map((val) => (isNaN(val) ? '' : val)).join(',')}
                 onChange={(e) =>
                   setY(
-                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : val))
                   )
                 }
               />
@@ -97,6 +109,13 @@ const Vandermonde = () => {
         </div>
 
         <div className='result'>
+          {error && <div className='error-message'> error: {error} </div>}
+            {result && result.message &&
+              <div className='message'>
+                {result.message}
+              </div>
+          } <br/>
+
           {result && (
             <table>
               <thead>

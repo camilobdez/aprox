@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 const Spline = () => {
@@ -7,8 +7,8 @@ const Spline = () => {
   const [d, setD] = useState(1);
   const [result, setResult] = useState([]);
   const [plotImage, setPlotImage] = useState(null);
+  const [error, setError] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
-  const [showGraph, setShowGraph] = useState(false);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -19,10 +19,7 @@ const Spline = () => {
         y: y,
         d: d,
       });
-
-      setResult(response.data.result);
-      //setPlotImage(response.data.plotImage); // Almacena la URL de la imagen
-
+      
       // Solicitar al servidor la generación del gráfico con los valores x e y
       const plotResponse = await axios.get('http://localhost:5000/generate_plot', {
         params: {
@@ -33,11 +30,22 @@ const Spline = () => {
         responseType: 'blob',
       });
 
-      // Crear una URL de blob para la imagen
-      const imageSrc = URL.createObjectURL(new Blob([plotResponse.data]));
-      setPlotImage(imageSrc);
+      if (response.data.error) {
+        setError(response.data.error);
+        setResult(null);
+      } else {
+        setResult(response.data.result);
+        const imageSrc = URL.createObjectURL(new Blob([plotResponse.data]));
+        setPlotImage(imageSrc);
+        setError(null);
+      }
     } catch (error) {
-      setResult('Error: Unable to calculate the result.');
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('unable to calculate the result');
+      }
+      setResult([]);
     }
   };
 
@@ -64,7 +72,7 @@ const Spline = () => {
                 value={x.map((val) => (isNaN(val) ? '' : val)).join(',')}
                 onChange={(e) =>
                   setX(
-                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : val))
                   )
                 }
               />
@@ -78,7 +86,7 @@ const Spline = () => {
                 value={y.map((val) => (isNaN(val) ? '' : val)).join(',')}
                 onChange={(e) =>
                   setY(
-                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : val))
                   )
                 }
               />
@@ -119,6 +127,13 @@ const Spline = () => {
         </div>
 
         <div className='result'>
+          {error && <div className='error-message'> error: {error} </div>}
+            {result && result.message &&
+              <div className='message'>
+                {result.message}
+              </div>
+          } <br/>
+
           {result && (
             <table>
               <thead>

@@ -6,27 +6,29 @@ import matplotlib.pyplot as plt
 from flask import Flask, render_template
 
 def my_spline(x, y, d):
-    n = len(x)
-    A = np.zeros(((d + 1) * (n - 1), (d + 1) * (n - 1)))
-    b = np.zeros(((d + 1) * (n - 1), 1))
-    cua = np.power(x, 2)
-    cub = np.power(x, 3)
+    try:
+        n = len(x)
+        A = np.zeros(((d + 1) * (n - 1), (d + 1) * (n - 1)))
+        b = np.zeros(((d + 1) * (n - 1), 1))
+        cua = np.power(x, 2)
+        cub = np.power(x, 3)
 
-    if d == 1:  # Lineal
-        A, b = construct_linear_spline(x, y, n, A, b)
-        val = np.linalg.inv(A).dot(b)
-        tabla = np.reshape(val, (n - 1, d + 1))
-        #print(tabla)
-        return tabla.tolist()
-        #return pd.DataFrame(tabla,columns=["a","b"])
+        if d == 1:  # Lineal
+            A, b = construct_linear_spline(x, y, n, A, b)
+            val = np.linalg.inv(A).dot(b)
+            tabla = np.reshape(val, (n - 1, d + 1))
+            return tabla.tolist()
 
-    elif d == 3:  # Cubic
-        A, b = construct_cubic_spline(x, y, n, A, b, cua, cub)
-        val = np.linalg.inv(A).dot(b)
-        tabla = np.reshape(val, (n - 1, d + 1))
+        elif d == 3:  # Cubic
+            A, b = construct_cubic_spline(x, y, n, A, b, cua, cub)
+            val = np.linalg.inv(A).dot(b)
+            tabla = np.reshape(val, (n - 1, d + 1))    
+            return tabla.tolist()
         
-        return tabla.tolist()
-        #return pd.DataFrame(tabla,columns=["a","b","c","d"])
+    except np.linalg.LinAlgError as e:
+        raise ValueError(f"Error al resolver el sistema")
+        return ["Error al resolver el sistema"]
+
 
 def construct_linear_spline(x, y, n, A, b):
     c = 0

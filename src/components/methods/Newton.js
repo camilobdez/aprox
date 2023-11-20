@@ -6,6 +6,7 @@ const Newton = () => {
   const [y, setY] = useState([5, 7, 7, 9]);
   const [result, setResult] = useState([]);
   const [pol, setPol] = useState([]);
+  const [error, setError] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
 
   const handleFormSubmit = async (e) => {
@@ -15,11 +16,22 @@ const Newton = () => {
         x: x,
         y: y,
       });
-
-      setResult(response.data.result);
-      setPol(response.data.pol);
+      
+      if (response.data.error) {
+        setError(response.data.error);
+        setResult(null);
+      } else {
+        setResult(response.data.result);
+        setPol(response.data.pol);
+        setError(null);
+      }
     } catch (error) {
-      setResult('Error: Unable to calculate the result.');
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('unable to calculate the result');
+      }
+      setResult([]);
     }
   };
 
@@ -56,7 +68,7 @@ const Newton = () => {
                 value={x.map((val) => (isNaN(val) ? '' : val)).join(',')}
                 onChange={(e) =>
                   setX(
-                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : val))
                   )
                 }
               />
@@ -70,7 +82,7 @@ const Newton = () => {
                 value={y.map((val) => (isNaN(val) ? '' : val)).join(',')}
                 onChange={(e) =>
                   setY(
-                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : val))
                   )
                 }
               />
@@ -98,6 +110,13 @@ const Newton = () => {
         </div>
 
         <div className='result'>
+          {error && <div className='error-message'> error: {error} </div>}
+            {result && result.message &&
+              <div className='message'>
+                {result.message}
+              </div>
+          } <br/>
+
           {result && (
             <table>
               <thead>

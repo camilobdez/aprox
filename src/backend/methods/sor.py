@@ -32,8 +32,8 @@ def my_sor(A, b, x0, tol, typeE, max_iter, w):
         s.append(str(x0))
 
     if error < tol:
-
         return s, E, n, radio
+    
     else:
-        print(f"Fracasó en {max_iter} iteraciones")
+        raise ValueError(f"Fracasó en {max_iter} iteraciones")
         return None, E, n, radio

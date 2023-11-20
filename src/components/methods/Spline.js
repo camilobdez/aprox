@@ -20,6 +20,34 @@ const Spline = () => {
     }
   };
 
+  const getPiecewiseLinearExpression = () => {
+    if (result.length === 0) {
+      return '0';
+    }
+  
+    const expressions = result.map((value, index) => {
+      if (index < result.length - 1) {
+        const nextIndex = index + 1;
+        const expression = `(${value[0]} * (x >= ${value[1]} && x < ${result[nextIndex][1]}))`;
+        return expression;
+      }
+      return null;
+    });
+  
+    const validExpressions = expressions.filter((expression) => expression !== null);
+  
+    // Construye la expresión a trozos usando operadores de suma
+    const piecewiseExpression = validExpressions.reduce((accumulator, expression) => {
+      return `${accumulator} + ${expression}`;
+    }, '');
+  
+    return piecewiseExpression;
+  };
+  
+  const piecewiseLinearExpression = getPiecewiseLinearExpression();
+  const encodedPiecewiseLinearExpression = encodeURIComponent(piecewiseLinearExpression);
+  const graphUrl = `/graph?function=${encodedPiecewiseLinearExpression}`;
+      
   return (
     <div className='container-method'>
       <div className='title-method'><a className='method-title' >Spline</a></div>
@@ -33,8 +61,12 @@ const Spline = () => {
               x Values (separate values with commas):
               <input
                 type='text'
-                value={x.join(',')}
-                onChange={(e) => setX(e.target.value.split(',').map((val) => parseFloat(val)))}
+                value={x.map((val) => (isNaN(val) ? '' : val)).join(',')}
+                onChange={(e) =>
+                  setX(
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                  )
+                }
               />
             </label>
 
@@ -43,14 +75,29 @@ const Spline = () => {
               y Values (separate values with commas):
               <input
                 type='text'
-                value={y.join(',')}
-                onChange={(e) => setY(e.target.value.split(',').map((val) => parseFloat(val)))}
+                value={y.map((val) => (isNaN(val) ? '' : val)).join(',')}
+                onChange={(e) =>
+                  setY(
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                  )
+                }
               />
             </label>
 
             <button type="submit" style={{ color: '#00ce7c' }}>run</button>
-
+            <br/>
+            
+            <br/>
+            <a className='button-graph' href={graphUrl} target="_blank" rel="noopener noreferrer">
+              Graph Function
+            </a>
           </form>
+          <br/>
+          
+          <div style={{color: '#c2fbe1', fontSize: '16px', width: '160%', border: '0.1px solid #ccc', padding: '6px'}}>
+            <th>Notas:</th><br/>
+            [1] Ingresa las coordenadas separadas por ','<br/><br/>
+          </div>
         </div>
 
         <div className='result'>
@@ -62,25 +109,37 @@ const Spline = () => {
                 </tr>
               </thead>
               <tbody>
-                {result.map((value, index) => (
-                <td key={index}>{value}</td>
-                ))}
+              {result.map((value, index) => (
+                <td key={index}>
+                  {Array.isArray(value) ? value.join(', ') : value}
+                </td>
+              ))}
               </tbody>
             </table>
           )}
           <br />
-          <th>
-            Polinomio: 
-            {result.map((value, index) => (
-                <React.Fragment key={index}> 
-                {value !== 0 && ( // Mostrar solo los términos no nulos
-                    <span>
-                    {value < 0 || index == 0 ? ` ${value}x^${result.length - 1 - index}` : ` + ${value}x^${result.length - 1 - index}`}
-                    </span>
-                )}
-                </React.Fragment>
+          <table>
+          <tbody>
+            {result.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                <td>Polinomio {rowIndex + 1}:</td>
+                <td>
+                  {row.map((value, index) => (
+                    <React.Fragment key={index}>
+                      <span>
+                        {index === 0
+                          ? `${value}x^${row.length - 1}`
+                          : value < 0
+                          ? ` - ${-value}x^${row.length - 1 - index}`
+                          : ` + ${value}x^${row.length - 1 - index}`}
+                      </span>
+                    </React.Fragment>
+                  ))}
+                </td>
+              </tr>
             ))}
-          </th>
+          </tbody>
+        </table>
         </div>
       </div>
     </div>

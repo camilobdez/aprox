@@ -47,10 +47,14 @@ const Jacobi = () => {
               Coefficients (separate values with commas):
               <input
                 type='text'
-                value={coefficients.map((row) => row.join(',')).join(';')}
+                value={coefficients
+                  .map((row) => row.map((val) => (isNaN(val) ? '' : val.toString())).join(','))
+                  .join(';')}
                 onChange={(e) =>
                   setCoefficients(
-                    e.target.value.split(';').map((row) => row.split(',').map((val) => parseFloat(val)))
+                    e.target.value.split(';').map((row) =>
+                      row.split(',').map((val) => (val.includes('.') ? parseFloat(val) : parseInt(val)))
+                    )
                   )
                 }
               />
@@ -61,8 +65,12 @@ const Jacobi = () => {
               Constants (separate values with commas):
               <input
                 type='text'
-                value={constants.join(',')}
-                onChange={(e) => setConstants(e.target.value.split(',').map((val) => parseFloat(val)))}
+                value={constants.map((val) => (isNaN(val) ? '' : val)).join(',')}
+                onChange={(e) =>
+                  setConstants(
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                  )
+                }
               />
             </label>
 
@@ -71,11 +79,15 @@ const Jacobi = () => {
               Initial Guess (separate values with commas):
               <input
                 type='text'
-                value={initialGuess.join(',')}
-                onChange={(e) => setInitialGuess(e.target.value.split(',').map((val) => parseFloat(val)))}
+                value={initialGuess.map((val) => (isNaN(val) ? '' : val)).join(',')}
+                onChange={(e) =>
+                  setInitialGuess(
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                  )
+                }
               />
             </label>
-            
+
             {/* Input for type error */}
             <label>
               error type 
@@ -110,7 +122,9 @@ const Jacobi = () => {
             <th>Notas:</th><br/>
             
             [1] Si el radio espectral es {'>='} 1, el metodo no necesariamente converge <br/><br/>
-            [2] Para ingresar la mátriz separe las filas con ';' como en Matlab <br/>
+            [2] Para ingresar la mátriz separe las filas con ';' como en Matlab <br/><br/>
+            [3] El método de Jacobi converge si la matriz es estrictamente diagonalmente dominante. <br/><br/>
+            [4] Se usó la norma infinita para calcular el error. <br/>
           </div>
         </div>
         

@@ -50,8 +50,12 @@ const Lagrange = () => {
               x Values (separate values with commas):
               <input
                 type='text'
-                value={x.join(',')}
-                onChange={(e) => setX(e.target.value.split(',').map((val) => parseFloat(val)))}
+                value={x.map((val) => (isNaN(val) ? '' : val)).join(',')}
+                onChange={(e) =>
+                  setX(
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                  )
+                }
               />
             </label>
 
@@ -60,8 +64,12 @@ const Lagrange = () => {
               y Values (separate values with commas):
               <input
                 type='text'
-                value={y.join(',')}
-                onChange={(e) => setY(e.target.value.split(',').map((val) => parseFloat(val)))}
+                value={y.map((val) => (isNaN(val) ? '' : val)).join(',')}
+                onChange={(e) =>
+                  setY(
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                  )
+                }
               />
             </label>
 
@@ -72,8 +80,13 @@ const Lagrange = () => {
             <a className='button-graph' href={graphUrl} target="_blank" rel="noopener noreferrer">
               Graph Function
             </a>
-
           </form>
+          <br/>
+          
+          <div style={{color: '#c2fbe1', fontSize: '16px', width: '160%', border: '0.1px solid #ccc', padding: '6px'}}>
+            <th>Notas:</th><br/>
+            [1] Ingresa las coordenadas separadas por ','<br/><br/>
+          </div>
         </div>
 
         <div className='result'>

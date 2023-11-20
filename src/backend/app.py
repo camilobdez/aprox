@@ -255,11 +255,12 @@ def gaussseidel():
     coefficients = np.array(data['coefficients'])
     constants = np.array(data['constants'])
     initial_guess = np.array(data['initialGuess'])
+    typeE = int(data['typeError'])
     tol = float(data['tolerance'])
     max_iter = int(data['maxIterations'])
 
     try:
-        result, errors, num_iterations, radio = my_gauss_seidel(coefficients, constants, initial_guess, tol, max_iter)
+        result, errors, num_iterations, radio = my_gauss_seidel(coefficients, constants, initial_guess, tol, typeE, max_iter)
         response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
     except Exception as e:
         response = {'error': str(e)}
@@ -273,12 +274,13 @@ def sor():
     coefficients = np.array(data['coefficients'])
     constants = np.array(data['constants'])
     initial_guess = np.array(data['initialGuess'])
+    typeE = int(data['typeError'])
     tol = float(data['tolerance'])
     max_iter = int(data['maxIterations'])
     w = float(data['w'])
 
     try:
-        result, errors, num_iterations, radio = my_sor(coefficients, constants, initial_guess, tol, max_iter, w)
+        result, errors, num_iterations, radio = my_sor(coefficients, constants, initial_guess, tol, typeE, max_iter, w)
         response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
     except Exception as e:
         response = {'error': str(e)}

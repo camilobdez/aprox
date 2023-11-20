@@ -2,10 +2,17 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
 import math
+import plotly.express as px
 from flask import Flask, render_template, send_file
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import io
 import re
+import base64
+import threading
+from scipy.interpolate import CubicSpline
+from scipy import interpolate
 from methods.bisection import my_bisection
 from methods.false_position import my_false_position
 from methods.fixed_point import my_fixed_point
@@ -31,16 +38,42 @@ def f_to_python(funct):
 
 @app.route('/generate_plot', methods=['GET'])
 def generate_plot():
-    plt.plot([1, 2, 3, 4], [1, 4, 9, 16])
-    plt.xlabel('X-axis')
-    plt.ylabel('Y-axis')
-    plt.title('Generated Plot')
+     # Obtén los parámetros de la URL
+    x_values = request.args.get('x', default='', type=str)
+    y_values = request.args.get('y', default='', type=str)
+    d = request.args.get('d', default='', type=int)
 
-    image_stream = io.BytesIO()
-    plt.savefig(image_stream, format='png')
-    image_stream.seek(0)
+    x_values = [float(x) for x in x_values.split(',')]
+    y_values = [float(y) for y in y_values.split(',')]
+    plt.clf()
 
-    return send_file(image_stream, mimetype='image/png')
+    if d == 1:
+        plt.plot(x_values, y_values)
+        plt.xlabel('X-axis')
+        plt.ylabel('Y-axis')
+        plt.title('Generated Plot')
+
+        image_stream = io.BytesIO()
+        plt.savefig(image_stream, format='png')
+        image_stream.seek(0)
+
+        return send_file(image_stream, mimetype='image/png')
+    else:
+        cs = CubicSpline(x_values, y_values)
+        tck = interpolate.splrep(x_values, y_values, s=0)
+        xfit = np.arange(x_values[0], x_values[-1], np.pi/50)
+        yfit = interpolate.splev(xfit, tck, der=0)
+        plt.plot(xfit, yfit,'b')
+        
+        plt.xlabel('X-axis')
+        plt.ylabel('Y-axis')
+        plt.title('Generated Plot')
+
+        image_stream = io.BytesIO()
+        plt.savefig(image_stream, format='png')
+        image_stream.seek(0)
+
+        return send_file(image_stream, mimetype='image/png')
 
 
 
@@ -356,9 +389,10 @@ def spline():
     data = request.get_json()
     x = np.array(data['x'])
     y = np.array(data['y'])
+    d = int(data['d'])
 
     try:
-        result = my_spline(x, y)
+        result = my_spline(x, y, d)
         response = {'result': result}
     except Exception as e:
         response = {'error': str(e)}

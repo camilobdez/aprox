@@ -197,6 +197,17 @@ nav ul li a {
   border-radius: 5px;
 }
 
+.error-graph {
+  border: 2px solid #00ce7c;
+  padding: 10px;
+  background-color: black;
+  color: #00ce7c;
+  margin-top: 50px;
+  border-radius: 5px;
+  width: 500px;
+  margin-left: 50px;
+}
+
 .message {
   color:#c2fbe1;
   padding-bottom: 20px;
@@ -220,3 +231,82 @@ nav ul li a {
   color: #c2fbe1;
 }
 
+.home {
+  align-self: center;
+  align-content: center;
+  align-items: center;
+  padding-top: 20px;
+  text-align: center;
+}
+
+.home p {
+  padding-top: 10px;
+}
+
+.home img {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.about-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  max-width: 1100px; /* Adjust the max-width as needed */
+  margin: 10px;
+  font-size: 15px;
+  padding: 20px; /* Adjust the padding as needed */
+  height: 400px;
+}
+
+.about-text {
+  width: 800px;
+  margin-right: 20px;
+  font-size: 15px;
+}
+
+
+.about-text p {
+  flex: 1;
+  margin-right: 20px;
+  margin-top: 5px;
+  font-size: 18px;
+  color: white;
+  opacity: 0.8; 
+}
+
+.about-text em {
+  flex: 1;
+  margin-right: 20px;
+  margin-top: 5px;
+  font-size: 18px;
+  color: white;
+}
+
+
+.about-text li {
+  flex: 1;
+  margin-right: 10px;
+  margin-top: 10px;
+  font-size: 18px;
+  color: #c2fbe1;
+}
+
+.about-image img {
+  margin-top: 10px;
+  align-content: flex-end;
+  width: 2%;
+  max-width: 700px;
+  height: 400px;
+  opacity: 0.7;
+}
+
+.about-title {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.title-about {
+  padding-left: 20px;
+  padding-top: 20px;
+}

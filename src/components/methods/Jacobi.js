@@ -12,6 +12,7 @@ const Jacobi = () => {
   const [errors, setErrors] = useState(null);
   const [numIterations, setNumIterations] = useState(null); 
   const [radio, setRadio] = useState(null); 
+  const [showHelp, setShowHelp] = useState(false);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -44,7 +45,7 @@ const Jacobi = () => {
           
             {/* Input for coefficients */}
             <label>
-              Coefficients (separate values with commas):
+              Coefficients:
               <input
                 type='text'
                 value={coefficients
@@ -62,7 +63,7 @@ const Jacobi = () => {
 
             {/* Input for constants */}
             <label>
-              Constants (separate values with commas):
+              Constants:
               <input
                 type='text'
                 value={constants.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -76,7 +77,7 @@ const Jacobi = () => {
 
             {/* Input for initial guess */}
             <label>
-              Initial Guess (separate values with commas):
+              Initial guess:
               <input
                 type='text'
                 value={initialGuess.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -90,7 +91,7 @@ const Jacobi = () => {
 
             {/* Input for type error */}
             <label>
-              error type 
+              Error type 
               <select value={typeError} onChange={(e) => setTypeError(e.target.value)}>
                 <option value="absolute">absolute</option>
                 <option value="relative">relative</option>
@@ -105,7 +106,7 @@ const Jacobi = () => {
 
             {/* Input for max iterations */}
             <label>
-              Max Iterations
+              Max iterations
               <input
                 type='number'
                 value={maxIterations}
@@ -114,20 +115,24 @@ const Jacobi = () => {
             </label>
 
             <button type="submit" style={{color: '#00ce7c'}}>run</button>
-          
-          </form>
-          <br/>
-
-          <div style={{color: '#c2fbe1', fontSize: '16px', width: '160%', border: '0.1px solid #ccc', padding: '6px'}}>
-            <th>Notas:</th><br/>
             
-            [1] Si el radio espectral es {'>='} 1, el metodo no necesariamente converge <br/><br/>
-            [2] Para ingresar la mátriz separe las filas con ';' como en Matlab <br/><br/>
-            [3] El método de Jacobi converge si la matriz es estrictamente diagonalmente dominante. <br/><br/>
-            [4] Se usó la norma infinita para calcular el error. <br/>
-          </div>
+            <button type="button" style={{color: '#00ce7c'}} onClick={() => setShowHelp(!showHelp)}>
+              help
+            </button>
+
+            {showHelp && (
+              <div className='help-container'>
+                <ul>
+                  <li>[1] Si el radio espectral es {'>='} 1, el metodo no necesariamente converge</li>
+                  <li>[2] Para ingresar la mátriz separe las filas con ';' y los valores con ',' como en Matlab</li>
+                  <li>[3] El método de Jacobi converge si la matriz es estrictamente diagonalmente dominante.</li>
+                  <li>[4] Se usó la norma infinita para calcular el error.</li>
+                </ul>
+              </div>
+              )}
+
+          </form>
         </div>
-        
 
         <div className='result'>
           {result && (

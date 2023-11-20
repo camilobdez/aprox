@@ -1,53 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Spline = () => {
   const [x, setX] = useState([1, 3, 4, 5]);
   const [y, setY] = useState([5, 7, 7, 9]);
+  const [d, setD] = useState(1);
   const [result, setResult] = useState([]);
+  const [plotImage, setPlotImage] = useState(null);
+  const [showHelp, setShowHelp] = useState(false);
+  const [showGraph, setShowGraph] = useState(false);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Enviar los valores x e y al servidor para calcular el resultado
       const response = await axios.post('http://localhost:5000/spline', {
         x: x,
         y: y,
+        d: d,
       });
 
       setResult(response.data.result);
+      //setPlotImage(response.data.plotImage); // Almacena la URL de la imagen
+
+      // Solicitar al servidor la generación del gráfico con los valores x e y
+      const plotResponse = await axios.get('http://localhost:5000/generate_plot', {
+        params: {
+          x: x.join(','),
+          y: y.join(','),
+          d: d,
+        },
+        responseType: 'blob',
+      });
+
+      // Crear una URL de blob para la imagen
+      const imageSrc = URL.createObjectURL(new Blob([plotResponse.data]));
+      setPlotImage(imageSrc);
     } catch (error) {
       setResult('Error: Unable to calculate the result.');
     }
   };
 
-  const getPiecewiseLinearExpression = () => {
-    if (result.length === 0) {
-      return '0';
+  const openGraphWindow = () => {
+    if (plotImage) {
+      const graphWindow = window.open('', '_blank');
+      graphWindow.document.write(`<img src="${plotImage}" alt="Generated Plot" />`);
     }
-  
-    const expressions = result.map((value, index) => {
-      if (index < result.length - 1) {
-        const nextIndex = index + 1;
-        const expression = `(${value[0]} * (x >= ${value[1]} && x < ${result[nextIndex][1]}))`;
-        return expression;
-      }
-      return null;
-    });
-  
-    const validExpressions = expressions.filter((expression) => expression !== null);
-  
-    // Construye la expresión a trozos usando operadores de suma
-    const piecewiseExpression = validExpressions.reduce((accumulator, expression) => {
-      return `${accumulator} + ${expression}`;
-    }, '');
-  
-    return piecewiseExpression;
   };
-  
-  const piecewiseLinearExpression = getPiecewiseLinearExpression();
-  const encodedPiecewiseLinearExpression = encodeURIComponent(piecewiseLinearExpression);
-  const graphUrl = `/graph?function=${encodedPiecewiseLinearExpression}`;
-      
+
   return (
     <div className='container-method'>
       <div className='title-method'><a className='method-title' >Spline</a></div>
@@ -58,7 +58,7 @@ const Spline = () => {
 
             {/* Input for x values */}
             <label>
-              x Values (separate values with commas):
+              X values:
               <input
                 type='text'
                 value={x.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -72,7 +72,7 @@ const Spline = () => {
 
             {/* Input for y values */}
             <label>
-              y Values (separate values with commas):
+              Y values:
               <input
                 type='text'
                 value={y.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -84,20 +84,38 @@ const Spline = () => {
               />
             </label>
 
+            {/* Input for d */}
+            <label>
+              d
+              <input
+                type='number'
+                value={d}
+                onChange={(e) => setD(parseFloat(e.target.value))}
+              />
+              <button onClick={() => setD(1)}>set to 1</button>
+              <button onClick={() => setD(3)}>set to 3</button>
+            </label>
+
+
             <button type="submit" style={{ color: '#00ce7c' }}>run</button>
-            <br/>
             
-            <br/>
-            <a className='button-graph' href={graphUrl} target="_blank" rel="noopener noreferrer">
+            <button type="button" style={{color: '#00ce7c'}} onClick={() => setShowHelp(!showHelp)}>
+              help
+            </button>
+
+            <button className='button-graph' onClick={openGraphWindow}>
               Graph Function
-            </a>
+            </button>
+
+            {showHelp && (
+              <div className='help-container'>
+                <ul>
+                  <li>[1] Ingresa las coordenadas separadas por ','</li>
+                </ul>
+              </div>
+              )}
+
           </form>
-          <br/>
-          
-          <div style={{color: '#c2fbe1', fontSize: '16px', width: '160%', border: '0.1px solid #ccc', padding: '6px'}}>
-            <th>Notas:</th><br/>
-            [1] Ingresa las coordenadas separadas por ','<br/><br/>
-          </div>
         </div>
 
         <div className='result'>

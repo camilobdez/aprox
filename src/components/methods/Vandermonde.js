@@ -6,6 +6,7 @@ const Vandermonde = () => {
   const [x, setX] = useState([1, 3, 4, 5]);
   const [y, setY] = useState([5, 7, 7, 9]);
   const [result, setResult] = useState([]);
+  const [showHelp, setShowHelp] = useState(false);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -48,7 +49,7 @@ const Vandermonde = () => {
 
             {/* Input for x values */}
             <label>
-              x Values (separate values with commas):
+              X values:
               <input
                 type='text'
                 value={x.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -62,7 +63,7 @@ const Vandermonde = () => {
 
             {/* Input for y values */}
             <label>
-              y Values (separate values with commas):
+              Y values:
               <input
                 type='text'
                 value={y.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -75,20 +76,24 @@ const Vandermonde = () => {
             </label>
 
             <button type="submit" style={{ color: '#00ce7c' }}>run</button>
-            <br/>
 
-            <br/>
+            <button type="button" style={{color: '#00ce7c'}} onClick={() => setShowHelp(!showHelp)}>
+              help
+            </button>
+
             <a className='button-graph' href={graphUrl} target="_blank" rel="noopener noreferrer">
               Graph Function
             </a>
+
+            {showHelp && (
+              <div className='help-container'>
+                <ul>
+                  <li>[1] Ingresa las coordenadas separadas por ','</li>
+                  </ul>
+              </div>
+              )}
           
           </form>
-          <br/>
-
-          <div style={{color: '#c2fbe1', fontSize: '16px', width: '160%', border: '0.1px solid #ccc', padding: '6px'}}>
-            <th>Notas:</th><br/>
-            [1] Ingresa las coordenadas separadas por ','<br/><br/>
-          </div>
         </div>
 
         <div className='result'>

@@ -1,7 +1,11 @@
 import numpy as np
 import pandas as pd
+import io
+import base64
+import matplotlib.pyplot as plt
+from flask import Flask, render_template
 
-def my_spline(x, y, d=1):
+def my_spline(x, y, d):
     n = len(x)
     A = np.zeros(((d + 1) * (n - 1), (d + 1) * (n - 1)))
     b = np.zeros(((d + 1) * (n - 1), 1))
@@ -12,20 +16,17 @@ def my_spline(x, y, d=1):
         A, b = construct_linear_spline(x, y, n, A, b)
         val = np.linalg.inv(A).dot(b)
         tabla = np.reshape(val, (n - 1, d + 1))
-        print(tabla)
+        #print(tabla)
         return tabla.tolist()
         #return pd.DataFrame(tabla,columns=["a","b"])
 
-    elif d == 2:  # Cuadratic
-        A, b = construct_quadratic_spline(x, y, n, A, b, cua)
-        val = np.linalg.inv(A).dot(b)
-        tabla = np.reshape(val, (n - 1, d + 1))
-        return pd.DataFrame(tabla,columns=["a","b","c"])
     elif d == 3:  # Cubic
         A, b = construct_cubic_spline(x, y, n, A, b, cua, cub)
         val = np.linalg.inv(A).dot(b)
         tabla = np.reshape(val, (n - 1, d + 1))
-        return pd.DataFrame(tabla,columns=["a","b","c","d"])
+        
+        return tabla.tolist()
+        #return pd.DataFrame(tabla,columns=["a","b","c","d"])
 
 def construct_linear_spline(x, y, n, A, b):
     c = 0
@@ -44,41 +45,6 @@ def construct_linear_spline(x, y, n, A, b):
         b[h] = y[i]
         c += 2
         h += 1
-
-    return A, b
-
-def construct_quadratic_spline(x, y, n, A, b, cua):
-    c = 0
-    h = 0
-    for i in range(0, n - 1):
-        A[h, c] = cua[i]
-        A[h, c + 1] = x[i]
-        A[h, c + 2] = 1
-        b[h] = y[i]
-        c += 3
-        h += 1
-
-    c = 0
-    for i in range(1, n):
-        A[h, c] = cua[i]
-        A[h, c + 1] = x[i]
-        A[h, c + 2] = 1
-        b[h] = y[i]
-        c += 3
-        h += 1
-
-    c = 0
-    for i in range(1, n - 1):
-        A[h, c] = 2 * x[i]
-        A[h, c + 1] = 1
-        A[h, c + 3] = -2 * x[i]
-        A[h, c + 4] = -1
-        b[h] = 0
-        c += 4
-        h += 1
-
-    A[h, 0] = 2
-    b[h] = 0
 
     return A, b
 

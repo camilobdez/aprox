@@ -6,7 +6,7 @@ const Newton = () => {
   const [y, setY] = useState([5, 7, 7, 9]);
   const [result, setResult] = useState([]);
   const [pol, setPol] = useState([]);
-
+  const [showHelp, setShowHelp] = useState(false);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -50,7 +50,7 @@ const Newton = () => {
 
             {/* Input for x values */}
             <label>
-              x Values (separate values with commas):
+              X values:
               <input
                 type='text'
                 value={x.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -64,7 +64,7 @@ const Newton = () => {
 
             {/* Input for y values */}
             <label>
-              y Values (separate values with commas):
+              Y values:
               <input
                 type='text'
                 value={y.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -77,19 +77,24 @@ const Newton = () => {
             </label>
 
             <button type="submit" style={{ color: '#00ce7c' }}>run</button>
-            <br/>
             
-            <br/>
+            <button type="button" style={{color: '#00ce7c'}} onClick={() => setShowHelp(!showHelp)}>
+              help
+            </button>
+            
             <a className='button-graph' href={graphUrl} target="_blank" rel="noopener noreferrer">
               Graph Function
             </a>
-          </form>
-          <br/>
+            
+            {showHelp && (
+              <div className='help-container'>
+                <ul>
+                  <li>[1] Ingresa las coordenadas separadas por ','</li>
+                </ul>
+              </div>
+              )}
 
-          <div style={{color: '#c2fbe1', fontSize: '16px', width: '160%', border: '0.1px solid #ccc', padding: '6px'}}>
-            <th>Notas:</th><br/>
-            [1] Ingresa las coordenadas separadas por ','<br/><br/>
-          </div>
+          </form>
         </div>
 
         <div className='result'>

@@ -76,6 +76,8 @@ def generate_plot():
         return send_file(image_stream, mimetype='image/png')
 
 
+
+
 @app.route('/bisection', methods=['POST'])
 def bisection():
     data = request.get_json()

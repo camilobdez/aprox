@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Spline = () => {
@@ -9,23 +9,7 @@ const Spline = () => {
   const [plotImage, setPlotImage] = useState(null);
   const [error, setError] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
-
-
-  useEffect(() => {
-    // Fetch the plot image from the Flask server
-    fetch('http://localhost:5000/generate_plot')  // Update the URL to match your Flask server
-        .then((response) => response.blob())
-        .then((blob) => {
-            // Create a blob URL for the image
-            const imageSrc = URL.createObjectURL(blob);
-            setPlotImage(imageSrc);
-        })
-        .catch((error) => {
-            console.error('Error fetching plot image:', error);
-        });
-}, []);
-
-
+  const [showGraph, setShowGraph] = useState(false);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -142,8 +126,6 @@ const Spline = () => {
 
           </form>
         </div>
-
-        {plotImage && <img src={plotImage} alt="Generated Plot" />}
 
         <div className='result'>
           {error && <div className='error-message'> error: {error} </div>}

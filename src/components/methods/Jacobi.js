@@ -11,7 +11,8 @@ const Jacobi = () => {
   const [result, setResult] = useState(null);
   const [errors, setErrors] = useState(null);
   const [numIterations, setNumIterations] = useState(null); 
-  const [radio, setRadio] = useState(null); 
+  const [radio, setRadio] = useState(null);
+  const [error, setError] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
 
   const handleFormSubmit = async (e) => {
@@ -25,19 +26,30 @@ const Jacobi = () => {
         tolerance: tolerance,
         maxIterations: maxIterations,
       });
-        
-      setResult(response.data.result);
-      setErrors(response.data.errors);
-      setNumIterations(response.data.numIterations);
-      setRadio(response.data.radio);
+      
+      if (response.data.error) {
+        setError(response.data.error);
+        setResult(null);
+      } else {
+        setResult(response.data.result);
+        setErrors(response.data.errors);
+        setNumIterations(response.data.numIterations);
+        setRadio(response.data.radio);
+        setError(null);
+      }
     } catch (error) {
-      setResult('Error: Unable to calculate the result.');
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('unable to calculate the result');
+      }
+      setResult(null);
     }
   };
   
   return (
     <div className='container-method'>
-      <div className='title-method'><a className='method-title' >jacobi</a></div>
+      <div className='title-method'><a className='method-title' >Jacobi</a></div>
       <div className='content-method'>
         <div className='form-container'>
       
@@ -45,7 +57,7 @@ const Jacobi = () => {
           
             {/* Input for coefficients */}
             <label>
-              coefficients
+              Coefficients:
               <input
                 type='text'
                 value={coefficients
@@ -54,7 +66,7 @@ const Jacobi = () => {
                 onChange={(e) =>
                   setCoefficients(
                     e.target.value.split(';').map((row) =>
-                      row.split(',').map((val) => (val.includes('.') ? parseFloat(val) : parseInt(val)))
+                      row.split(',').map((val) => (val))
                     )
                   )
                 }
@@ -63,13 +75,13 @@ const Jacobi = () => {
 
             {/* Input for constants */}
             <label>
-              constants
+              Constants:
               <input
                 type='text'
                 value={constants.map((val) => (isNaN(val) ? '' : val)).join(',')}
                 onChange={(e) =>
                   setConstants(
-                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : val))
                   )
                 }
               />
@@ -77,13 +89,13 @@ const Jacobi = () => {
 
             {/* Input for initial guess */}
             <label>
-              initial guess
+              Initial guess:
               <input
                 type='text'
                 value={initialGuess.map((val) => (isNaN(val) ? '' : val)).join(',')}
                 onChange={(e) =>
                   setInitialGuess(
-                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : val))
                   )
                 }
               />
@@ -91,7 +103,7 @@ const Jacobi = () => {
 
             {/* Input for type error */}
             <label>
-              error type 
+              Error type 
               <select value={typeError} onChange={(e) => setTypeError(e.target.value)}>
                 <option value="absolute">absolute</option>
                 <option value="relative">relative</option>
@@ -100,13 +112,13 @@ const Jacobi = () => {
 
             {/* Input for tolerance */}
             <label>
-              tolerance
-              <input type='number' value={tolerance} onChange={(e) => setTolerance(parseFloat(e.target.value))} />
+              Tolerance
+              <input type='number' value={tolerance} onChange={(e) => setTolerance(e.target.value)} />
             </label>
 
             {/* Input for max iterations */}
             <label>
-              max iterations
+              Max iterations
               <input
                 type='number'
                 value={maxIterations}
@@ -135,6 +147,13 @@ const Jacobi = () => {
         </div>
 
         <div className='result'>
+          {error && <div className='error-message'> error: {error} </div>}
+            {result && result.message &&
+              <div className='message'>
+                {result.message}
+              </div>
+          } <br/>
+          
           {result && (
             <table>
               <thead>
@@ -156,7 +175,8 @@ const Jacobi = () => {
             </table>            
             )}
             <br />
-          <th>radio espectral: {radio}</th>
+          <th>Radio espectral: {radio}</th>
+          <p>{radio >= 1 ? 'Como Radio >= 1 el metodo puede no converger': ''}</p>
         </div>
       </div>
     </div>

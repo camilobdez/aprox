@@ -6,14 +6,15 @@ def my_fixed_point(f, g, x0, typeE, tol, max_iter):
     if f(x0)==0:
         message = "the root was found for x = ",x0
     else:
-        current_iteration = [0, f"{x0:.10f}", f"{g(x0):.10f}", f"{f(x0):.1e}", ]
+        f_x=f(x0)
+        current_iteration = [0, f"{x0:.10f}", f"{g(x0):.10f}", f"{f_x:.1e}", ]
         iterations.append(current_iteration)
         E=1e19
         i=1
         xa=x0
         x0=g(x0)
 
-        while (E >= tol and i <= max_iter):
+        while (E >= tol and i <= max_iter and f_x!=0):
             x1 = g(x0)
             f_x = f(x0) 
             
@@ -24,9 +25,6 @@ def my_fixed_point(f, g, x0, typeE, tol, max_iter):
             current_iteration = [f"{i}", f"{x0:.10f}", f"{x1:.10f}", f"{f_x:.1e}", f"{E:.1e}"]
             iterations.append(current_iteration)
             print(current_iteration)
-
-            if f_x==0:
-                break
             
             xa = x0
             x0 = x1

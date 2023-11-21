@@ -109,7 +109,7 @@ const FalsePosition = () => {
                 <ul>
                   <li>the function must be continuous in [a, b]</li>
                   <li>f(a)*f(b) {'<'} 0</li>
-                  <li>symbols defined: x, log (base e), e, sin, cos, tan, ^</li>
+                  <li>symbols defined: x, log (base e), e, sin, cos, tan, abs, ^</li>
                   <li>to multiply terms you must use  the '*' symbol</li>
                 </ul>
               </div>

@@ -7,25 +7,9 @@ const Spline = () => {
   const [d, setD] = useState(1);
   const [result, setResult] = useState([]);
   const [plotImage, setPlotImage] = useState(null);
+  const [error, setError] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
   const [showGraph, setShowGraph] = useState(false);
-
-
-  useEffect(() => {
-    // Fetch the plot image from the Flask server
-    fetch('http://localhost:5000/generate_plot')  // Update the URL to match your Flask server
-        .then((response) => response.blob())
-        .then((blob) => {
-            // Create a blob URL for the image
-            const imageSrc = URL.createObjectURL(blob);
-            setPlotImage(imageSrc);
-        })
-        .catch((error) => {
-            console.error('Error fetching plot image:', error);
-        });
-}, []);
-
-
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -36,10 +20,7 @@ const Spline = () => {
         y: y,
         d: d,
       });
-
-      setResult(response.data.result);
-      //setPlotImage(response.data.plotImage); // Almacena la URL de la imagen
-
+      
       // Solicitar al servidor la generación del gráfico con los valores x e y
       const plotResponse = await axios.get('http://localhost:5000/generate_plot', {
         params: {
@@ -50,11 +31,22 @@ const Spline = () => {
         responseType: 'blob',
       });
 
-      // Crear una URL de blob para la imagen
-      const imageSrc = URL.createObjectURL(new Blob([plotResponse.data]));
-      setPlotImage(imageSrc);
+      if (response.data.error) {
+        setError(response.data.error);
+        setResult(null);
+      } else {
+        setResult(response.data.result);
+        const imageSrc = URL.createObjectURL(new Blob([plotResponse.data]));
+        setPlotImage(imageSrc);
+        setError(null);
+      }
     } catch (error) {
-      setResult('Error: Unable to calculate the result.');
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('unable to calculate the result');
+      }
+      setResult([]);
     }
   };
 
@@ -67,7 +59,7 @@ const Spline = () => {
 
   return (
     <div className='container-method'>
-      <div className='title-method'><a className='method-title' >spline</a></div>
+      <div className='title-method'><a className='method-title' >Spline</a></div>
       <div className='content-method'>
         <div className='form-container'>
 
@@ -75,13 +67,13 @@ const Spline = () => {
 
             {/* Input for x values */}
             <label>
-              x values
+              X values:
               <input
                 type='text'
                 value={x.map((val) => (isNaN(val) ? '' : val)).join(',')}
                 onChange={(e) =>
                   setX(
-                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : val))
                   )
                 }
               />
@@ -89,13 +81,13 @@ const Spline = () => {
 
             {/* Input for y values */}
             <label>
-              y values
+              Y values:
               <input
                 type='text'
                 value={y.map((val) => (isNaN(val) ? '' : val)).join(',')}
                 onChange={(e) =>
                   setY(
-                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : val))
                   )
                 }
               />
@@ -121,7 +113,7 @@ const Spline = () => {
             </button>
 
             <button className='button-graph' onClick={openGraphWindow}>
-              graph function
+              Graph Function
             </button>
 
             {showHelp && (
@@ -135,14 +127,19 @@ const Spline = () => {
           </form>
         </div>
 
-        {plotImage && <img src={plotImage} alt="Generated Plot" />}
-
         <div className='result'>
+          {error && <div className='error-message'> error: {error} </div>}
+            {result && result.message &&
+              <div className='message'>
+                {result.message}
+              </div>
+          } <br/>
+
           {result && (
             <table>
               <thead>
                 <tr>
-                  <th colSpan={result.length}>coeficientes</th>
+                  <th colSpan={result.length}>Coeficientes</th>
                 </tr>
               </thead>
               <tbody>
@@ -159,7 +156,7 @@ const Spline = () => {
           <tbody>
             {result.map((row, rowIndex) => (
               <tr key={rowIndex}>
-                <td>polinomio {rowIndex + 1}:</td>
+                <td>Polinomio {rowIndex + 1}:</td>
                 <td>
                   {row.map((value, index) => (
                     <React.Fragment key={index}>

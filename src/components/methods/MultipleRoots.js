@@ -100,9 +100,9 @@ const MultipleRoots = () => {
             {showHelp && (
               <div className='help-container'>
                 <ul>
-                  <li>the function must be continuous and differentiable in [a,b]</li>
+                  <li>the function must be continuous and differentiable</li>
                   <li>it may not coverge because of divisions by zero</li>
-                  <li>symbols defined: x, log (base e), e, sin, cos, tan, ^</li>
+                  <li>symbols defined: x, log (base e), e, sin, cos, tan, abs, ^</li>
                   <li>to multiply terms you must use  the '*' symbol</li>
                 </ul>
               </div>

@@ -5,6 +5,7 @@ const Lagrange = () => {
   const [x, setX] = useState([1, 3, 4, 5]);
   const [y, setY] = useState([5, 7, 7, 9]);
   const [result, setResult] = useState([]);
+  const [error, setError] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
 
   const handleFormSubmit = async (e) => {
@@ -15,9 +16,20 @@ const Lagrange = () => {
         y: y,
       });
 
-      setResult(response.data.result);
+      if (response.data.error) {
+        setError(response.data.error);
+        setResult(null);
+      } else {
+        setResult(response.data.result);
+      }
     } catch (error) {
-      setResult('Error: Unable to calculate the result.');
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('unable to calculate the result');
+        setError(null);
+      }
+      setResult([]);
     }
   };
 
@@ -40,7 +52,7 @@ const Lagrange = () => {
 
   return (
     <div className='container-method'>
-      <div className='title-method'><a className='method-title' >lagrange</a></div>
+      <div className='title-method'><a className='method-title' >Lagrange</a></div>
       <div className='content-method'>
         <div className='form-container'>
 
@@ -48,13 +60,13 @@ const Lagrange = () => {
 
             {/* Input for x values */}
             <label>
-              x values
+              X values:
               <input
                 type='text'
                 value={x.map((val) => (isNaN(val) ? '' : val)).join(',')}
                 onChange={(e) =>
                   setX(
-                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : val))
                   )
                 }
               />
@@ -62,13 +74,13 @@ const Lagrange = () => {
 
             {/* Input for y values */}
             <label>
-              y values
+              Y values:
               <input
                 type='text'
                 value={y.map((val) => (isNaN(val) ? '' : val)).join(',')}
                 onChange={(e) =>
                   setY(
-                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : val))
                   )
                 }
               />
@@ -81,7 +93,7 @@ const Lagrange = () => {
             </button>
 
             <a className='button-graph' href={graphUrl} target="_blank" rel="noopener noreferrer">
-              graph function
+              Graph Function
             </a>
 
             {showHelp && (
@@ -96,11 +108,18 @@ const Lagrange = () => {
         </div>
 
         <div className='result'>
+          {error && <div className='error-message'> error: {error} </div>}
+            {result && result.message &&
+              <div className='message'>
+                {result.message}
+              </div>
+          } <br/>
+
           {result && (
             <table>
               <thead>
                 <tr>
-                  <th colSpan={result.length}>coeficientes</th>
+                  <th colSpan={result.length}>Coeficientes</th>
                 </tr>
               </thead>
               <tbody>
@@ -112,7 +131,7 @@ const Lagrange = () => {
           )}
           <br />
           <th>
-            polinomio: 
+            Polinomio: 
             {result.map((value, index) => (
               <React.Fragment key={index}> 
               {value !== 0 && ( // Mostrar solo los términos no nulos

@@ -17,7 +17,7 @@ def my_bisection(f, a, b, typeE, tol, max_iter):
         iterations.append(current_iteration)
         i = 2
         
-        while (E >= tol and i <= max_iter):
+        while (E >= tol and i <= max_iter and fm!=0):
 
             if fm * f(a) < 0:
                 b = xm
@@ -35,9 +35,6 @@ def my_bisection(f, a, b, typeE, tol, max_iter):
             current_iteration = [f"{i}", f"{a:.10f}", f"{xm:.10f}", f"{b:.10f}", f"{fm:.1e}", f"{E:.1e}"]
             iterations.append(current_iteration)
             print(current_iteration)
-
-            if fm==0:
-                break
 
             i += 1
 

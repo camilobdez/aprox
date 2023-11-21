@@ -109,7 +109,7 @@ const Secant = () => {
                 <ul>
                   <li>the function must be continuous and differentiable in [a,b]</li>
                   <li>the two initial values should be chosen to lie close to the root</li>
-                  <li>symbols defined: x, log (base e), e, sin, cos, tan, ^</li>
+                  <li>symbols defined: x, log (base e), e, sin, cos, tan, abs, ^</li>
                   <li>to multiply terms you must use  the '*' symbol</li>
                 </ul>
               </div>

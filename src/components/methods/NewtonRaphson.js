@@ -101,8 +101,9 @@ const NewtonRaphson = () => {
               <div className='help-container'>
                 <ul>
                   <li>x0 is very very important</li>
+                  <li>the function must be continuous and differentiable in the neineighborhood of the root you are trying to find</li>
                   <li>if the derivative approaches zero, the method loses its speed because is possible to be a case of multiple root</li>
-                  <li>symbols defined: x, log (base e), e, sin, cos, tan, ^</li>
+                  <li>symbols defined: x, log (base e), e, sin, cos, tan, abs, ^</li>
                   <li>to multiply terms you must use  the '*' symbol</li>
                 </ul>
               </div>

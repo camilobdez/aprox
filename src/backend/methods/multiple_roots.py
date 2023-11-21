@@ -23,7 +23,7 @@ def my_multipleroots(funct, x0, typeE, tol, max_iter):
         i = 1
         E = 1e19
 
-        while (E >= tol and i <= max_iter):
+        while (E >= tol and i <= max_iter and f0!=0):
             xi = xi-(f0*fx)/(fx*fx-f0*fxx)
             f0 = f.subs(x,xi)
             xi = float(xi)
@@ -38,8 +38,6 @@ def my_multipleroots(funct, x0, typeE, tol, max_iter):
             current_iteration = [f"{i}", f"{xi:.4e}", f"{f0:.4e}", f"{E:.4e}"]
             iterations.append(current_iteration)
             print(current_iteration)
-            if f0==0:
-                break
 
             x0 = xi
             i += 1

@@ -15,14 +15,15 @@ def my_newtonraphson(funct, x0, typeE, tol, max_iter):
         print(df)
         x0 = float(x0)
         f_xi = float(f_xi)
+        
         current_iteration = [0, f"{x0:.10f}", f"{f_xi:.4e}", ]
         iterations.append(current_iteration)
-        
+        print(current_iteration)
         xi=x0
         df_xi=df.subs(x, xi)
         i = 1
         E = 1e19
-        while (E >= tol and i <= max_iter):
+        while (E >= tol and i <= max_iter and f_xi!=0):
             xi = xi - f_xi/df_xi
             f_xi = f.subs(x,xi)
             xi = float(xi)
@@ -37,8 +38,7 @@ def my_newtonraphson(funct, x0, typeE, tol, max_iter):
             iterations.append(current_iteration)
             print(current_iteration)
 
-            if f_xi==0:
-                break
+    
             x0 = xi
             i += 1
 

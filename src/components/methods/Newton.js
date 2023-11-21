@@ -6,6 +6,7 @@ const Newton = () => {
   const [y, setY] = useState([5, 7, 7, 9]);
   const [result, setResult] = useState([]);
   const [pol, setPol] = useState([]);
+  const [error, setError] = useState(null);
   const [showHelp, setShowHelp] = useState(false);
 
   const handleFormSubmit = async (e) => {
@@ -15,11 +16,22 @@ const Newton = () => {
         x: x,
         y: y,
       });
-
-      setResult(response.data.result);
-      setPol(response.data.pol);
+      
+      if (response.data.error) {
+        setError(response.data.error);
+        setResult(null);
+      } else {
+        setResult(response.data.result);
+        setPol(response.data.pol);
+        setError(null);
+      }
     } catch (error) {
-      setResult('Error: Unable to calculate the result.');
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error);
+      } else {
+        setError('unable to calculate the result');
+      }
+      setResult([]);
     }
   };
 
@@ -42,7 +54,7 @@ const Newton = () => {
 
   return (
     <div className='container-method'>
-      <div className='title-method'><a className='method-title' >newton</a></div>
+      <div className='title-method'><a className='method-title' >Newton</a></div>
       <div className='content-method'>
         <div className='form-container'>
 
@@ -50,13 +62,13 @@ const Newton = () => {
 
             {/* Input for x values */}
             <label>
-              x values
+              X values:
               <input
                 type='text'
                 value={x.map((val) => (isNaN(val) ? '' : val)).join(',')}
                 onChange={(e) =>
                   setX(
-                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : val))
                   )
                 }
               />
@@ -64,13 +76,13 @@ const Newton = () => {
 
             {/* Input for y values */}
             <label>
-              y values
+              Y values:
               <input
                 type='text'
                 value={y.map((val) => (isNaN(val) ? '' : val)).join(',')}
                 onChange={(e) =>
                   setY(
-                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : parseFloat(val)))
+                    e.target.value.split(',').map((val) => (val.trim() === '' || isNaN(val) ? NaN : val))
                   )
                 }
               />
@@ -83,7 +95,7 @@ const Newton = () => {
             </button>
             
             <a className='button-graph' href={graphUrl} target="_blank" rel="noopener noreferrer">
-              graph function
+              Graph Function
             </a>
             
             {showHelp && (
@@ -98,11 +110,18 @@ const Newton = () => {
         </div>
 
         <div className='result'>
+          {error && <div className='error-message'> error: {error} </div>}
+            {result && result.message &&
+              <div className='message'>
+                {result.message}
+              </div>
+          } <br/>
+
           {result && (
             <table>
               <thead>
                 <tr>
-                  <th colSpan={result.length}>coeficientes</th>
+                  <th colSpan={result.length}>Coeficientes</th>
                 </tr>
               </thead>
               <tbody>

@@ -118,7 +118,7 @@ const FixedPoint = () => {
                   <li>for all x in [a, b], g(x) ∈ [a, b]</li>
                   <li>for all x in [a, b], g'(x) exists in (a, b) and |g'(x)| {"<="} k {"<"} 1</li>
                   <li>x0 is important</li>
-                  <li>symbols defined: x, log (base e), e, sin, cos, tan, ^</li>
+                  <li>symbols defined: x, log (base e), e, sin, cos, tan, abs, ^</li>
                   <li>to multiply terms you must use  the '*' symbol</li>
                 </ul>
               </div>

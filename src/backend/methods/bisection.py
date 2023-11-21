@@ -36,6 +36,9 @@ def my_bisection(f, a, b, typeE, tol, max_iter):
             iterations.append(current_iteration)
             print(current_iteration)
 
+            if fm==0:
+                break
+
             i += 1
 
         if fm==0:

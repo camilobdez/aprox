@@ -37,7 +37,7 @@ const GaussSeidel = () => {
   
   return (
     <div className='container-method'>
-      <div className='title-method'><a className='method-title' >Gauss_seidel</a></div>
+      <div className='title-method'><a className='method-title' >gauss-seidel</a></div>
       <div className='content-method'>
         <div className='form-container'>
       
@@ -45,7 +45,7 @@ const GaussSeidel = () => {
           
             {/* Input for coefficients */}
             <label>
-              Coefficients:
+              coefficients
               <input
                 type='text'
                 value={coefficients
@@ -63,7 +63,7 @@ const GaussSeidel = () => {
 
             {/* Input for constants */}
             <label>
-              Constants:
+              constants
               <input
                 type='text'
                 value={constants.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -77,7 +77,7 @@ const GaussSeidel = () => {
 
             {/* Input for initial guess */}
             <label>
-              Initial guess:
+              initial guess
               <input
                 type='text'
                 value={initialGuess.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -91,7 +91,7 @@ const GaussSeidel = () => {
 
             {/* Input for type error */}
             <label>
-              Error type 
+              error type 
               <select value={typeError} onChange={(e) => setTypeError(e.target.value)}>
                 <option value="absolute">absolute</option>
                 <option value="relative">relative</option>
@@ -100,13 +100,13 @@ const GaussSeidel = () => {
 
             {/* Input for tolerance */}
             <label>
-              Tolerance
+              tolerance
               <input type='number' value={tolerance} onChange={(e) => setTolerance(parseFloat(e.target.value))} />
             </label>
 
             {/* Input for max iterations */}
             <label>
-              Max iterations
+              max iterations
               <input
                 type='number'
                 value={maxIterations}
@@ -156,7 +156,7 @@ const GaussSeidel = () => {
             </table>            
             )}
             <br />
-          <th>Radio espectral: {radio}</th>
+          <th>radio espectral: {radio}</th>
         </div>
       </div>
     </div>

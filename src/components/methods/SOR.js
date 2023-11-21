@@ -39,7 +39,7 @@ const Sor = () => {
   
   return (
     <div className='container-method'>
-      <div className='title-method'><a className='method-title' >Sor</a></div>
+      <div className='title-method'><a className='method-title' >sor</a></div>
       <div className='content-method'>
         <div className='form-container'>
       
@@ -47,7 +47,7 @@ const Sor = () => {
           
             {/* Input for coefficients */}
             <label>
-              Coefficients:
+              coefficients
               <input
                 type='text'
                 value={coefficients
@@ -65,7 +65,7 @@ const Sor = () => {
 
             {/* Input for constants */}
             <label>
-              Constants:
+              constants
               <input
                 type='text'
                 value={constants.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -79,7 +79,7 @@ const Sor = () => {
 
             {/* Input for initial guess */}
             <label>
-              Initial guess:
+              initial guess
               <input
                 type='text'
                 value={initialGuess.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -93,7 +93,7 @@ const Sor = () => {
 
             {/* Input for type error */}
             <label>
-              Error type 
+              error type 
               <select value={typeError} onChange={(e) => setTypeError(e.target.value)}>
                 <option value="absolute">absolute</option>
                 <option value="relative">relative</option>
@@ -102,13 +102,13 @@ const Sor = () => {
 
             {/* Input for tolerance */}
             <label>
-              Tolerance
+              tolerance
               <input type='number' value={tolerance} onChange={(e) => setTolerance(parseFloat(e.target.value))} />
             </label>
 
             {/* Input for max iterations */}
             <label>
-              Max iterations
+              max iterations
               <input
                 type='number'
                 value={maxIterations}
@@ -169,7 +169,7 @@ const Sor = () => {
             </table>            
             )}
             <br />
-          <th>Radio espectral: {radio}</th>
+          <th>radio espectral: {radio}</th>
         </div>
       </div>
     </div>

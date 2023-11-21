@@ -67,7 +67,7 @@ const Spline = () => {
 
   return (
     <div className='container-method'>
-      <div className='title-method'><a className='method-title' >Spline</a></div>
+      <div className='title-method'><a className='method-title' >spline</a></div>
       <div className='content-method'>
         <div className='form-container'>
 
@@ -75,7 +75,7 @@ const Spline = () => {
 
             {/* Input for x values */}
             <label>
-              X values:
+              x values
               <input
                 type='text'
                 value={x.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -89,7 +89,7 @@ const Spline = () => {
 
             {/* Input for y values */}
             <label>
-              Y values:
+              y values
               <input
                 type='text'
                 value={y.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -121,7 +121,7 @@ const Spline = () => {
             </button>
 
             <button className='button-graph' onClick={openGraphWindow}>
-              Graph Function
+              graph function
             </button>
 
             {showHelp && (
@@ -142,7 +142,7 @@ const Spline = () => {
             <table>
               <thead>
                 <tr>
-                  <th colSpan={result.length}>Coeficientes</th>
+                  <th colSpan={result.length}>coeficientes</th>
                 </tr>
               </thead>
               <tbody>
@@ -159,7 +159,7 @@ const Spline = () => {
           <tbody>
             {result.map((row, rowIndex) => (
               <tr key={rowIndex}>
-                <td>Polinomio {rowIndex + 1}:</td>
+                <td>polinomio {rowIndex + 1}:</td>
                 <td>
                   {row.map((value, index) => (
                     <React.Fragment key={index}>

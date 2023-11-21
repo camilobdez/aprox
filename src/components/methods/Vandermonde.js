@@ -41,7 +41,7 @@ const Vandermonde = () => {
 
   return (
     <div className='container-method'>
-      <div className='title-method'><a className='method-title' >Vandermonde</a></div>
+      <div className='title-method'><a className='method-title' >vandermonde</a></div>
       <div className='content-method'>
         <div className='form-container'>
 
@@ -49,7 +49,7 @@ const Vandermonde = () => {
 
             {/* Input for x values */}
             <label>
-              X values:
+              x values
               <input
                 type='text'
                 value={x.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -63,7 +63,7 @@ const Vandermonde = () => {
 
             {/* Input for y values */}
             <label>
-              Y values:
+              y values
               <input
                 type='text'
                 value={y.map((val) => (isNaN(val) ? '' : val)).join(',')}
@@ -82,7 +82,7 @@ const Vandermonde = () => {
             </button>
 
             <a className='button-graph' href={graphUrl} target="_blank" rel="noopener noreferrer">
-              Graph Function
+              graph function
             </a>
 
             {showHelp && (
@@ -101,7 +101,7 @@ const Vandermonde = () => {
             <table>
               <thead>
                 <tr>
-                  <th colSpan={result.length}>Coeficientes</th>
+                  <th colSpan={result.length}>coeficientes</th>
                 </tr>
               </thead>
               <tbody>
@@ -113,7 +113,7 @@ const Vandermonde = () => {
           )}
           <br />
           <th>
-            Polinomio: 
+            polinomio 
             {result.map((value, index) => (
               <React.Fragment key={index}> 
               {value !== 0 && ( // Mostrar solo los términos no nulos

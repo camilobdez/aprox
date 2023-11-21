@@ -298,6 +298,15 @@ def jacobi():
         
         if max_iter <= 0:
             raise ValueError("max number  of iterations must be > 0")
+        
+        if len(coefficients) != len(constants):
+            raise ValueError("Tamaño de coefficients y constants debe ser igual")
+        
+        if len(coefficients) != len(initial_guess):
+            raise ValueError("Tamaño de coefficients y initial_guess debe ser igual")
+        
+        if len(constants) != len(initial_guess):
+            raise ValueError("Tamaño de constants y initial_guess debe ser igual")
 
         result, errors, num_iterations, radio = my_jacobi(coefficients, constants, initial_guess, tol, typeE, max_iter)
         response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
@@ -326,6 +335,15 @@ def gaussseidel():
         
         if max_iter <= 0:
             raise ValueError("max number  of iterations must be > 0")
+        
+        if len(coefficients) != len(constants):
+            raise ValueError("Tamaño de coefficients y constants debe ser igual")
+        
+        if len(coefficients) != len(initial_guess):
+            raise ValueError("Tamaño de coefficients y initial_guess debe ser igual")
+        
+        if len(constants) != len(initial_guess):
+            raise ValueError("Tamaño de constants y initial_guess debe ser igual")
 
         result, errors, num_iterations, radio = my_gauss_seidel(coefficients, constants, initial_guess, tol, typeE, max_iter)
         response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
@@ -354,6 +372,15 @@ def sor():
         
         if max_iter <= 0:
             raise ValueError("max number  of iterations must be > 0")
+        
+        if len(coefficients) != len(constants):
+            raise ValueError("Tamaño de coefficients y constants debe ser igual")
+        
+        if len(coefficients) != len(initial_guess):
+            raise ValueError("Tamaño de coefficients y initial_guess debe ser igual")
+        
+        if len(constants) != len(initial_guess):
+            raise ValueError("Tamaño de constants y initial_guess debe ser igual")
 
         result, errors, num_iterations, radio = my_sor(coefficients, constants, initial_guess, tol, typeE, max_iter, w)
         response = {'result': result, 'errors': errors, 'numIterations': num_iterations, 'radio': radio}
@@ -375,6 +402,9 @@ def vandermonde():
 
         if len(x) != len(y):
             raise ValueError("El tamaño de X y Y debería ser igual")
+        
+        if len(x) != len(set(x)):
+            raise ValueError("Los valores de X no deben repetirse")
     
         result = my_vandermonde(x, y)
         response = {'result': result}
@@ -396,6 +426,9 @@ def newton():
 
         if len(x_values) != len(y_values):
             raise ValueError("El tamaño de X y Y debería ser igual")
+        
+        if len(x_values) != len(set(x_values)):
+            raise ValueError("Los valores de X no deben repetirse")
 
         result = my_newton(x_values, y_values)
         pol = my_lagrange(x_values, y_values)
@@ -418,6 +451,9 @@ def lagrange():
 
         if len(x) != len(y):
             raise ValueError("El tamaño de X y Y debería ser igual")
+        
+        if len(x) != len(set(x)):
+            raise ValueError("Los valores de X no deben repetirse")
     
         result = my_lagrange(x, y)
         response = {'result': result}
@@ -440,6 +476,9 @@ def spline():
 
         if len(x) != len(y):
             raise ValueError("El tamaño de X y Y debería ser igual")
+        
+        if len(x) != len(set(x)):
+            raise ValueError("Los valores de X no deben repetirse")
 
         result = my_spline(x, y, d)
         response = {'result': result}

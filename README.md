@@ -28,8 +28,8 @@ A collection of numerical methods for solving equations, solving systems of equa
 ## Getting Started
 
 ### Prerequisites
-- [Python](https://www.python.org/downloads/) (version 3.7 or higher)
-- [Node.js](https://nodejs.org/en/download/) (version 14 or higher)
+- [Python](https://www.python.org/downloads/)
+- [Node.js](https://nodejs.org/en/download/)
 - Install required libraries: `flask`, `flask_cors`, `plotly`, `osmnx`, `matplotlib`, `sympy`, `scipy`, etc.
 
 ### Installation and usage

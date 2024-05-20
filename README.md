@@ -42,7 +42,7 @@ To get started with aprox, follow these steps:
     ```
 2. Navigate to the project directory:
     ```bash
-    cd aprox
+    cd aprox/frontend
     ```
 3. Install the necessary dependencies:
     ```bash
@@ -50,11 +50,12 @@ To get started with aprox, follow these steps:
     ```
 4. Navigate to the backend directory and run the application:
     ```bash
-    cd src/backend
+    cd aprox/backend
     python app.py
     ```
 5. Run the application:
     ```bash
+    cd aprox/frontend
     npm start
     ```
 Finally, open your browser and navigate to `http://localhost:3000` to interact with the web app.

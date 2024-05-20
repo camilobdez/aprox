@@ -34,7 +34,7 @@ A collection of numerical methods for solving equations, solving systems of equa
 
 ### Installation and usage
 
-To get started with Aprox, follow these steps:
+To get started with aprox, follow these steps:
 
 1. Clone the repository:
     ```bash

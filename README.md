@@ -60,9 +60,7 @@ To get started with Aprox, follow these steps:
 Finally, open your browser and navigate to `http://localhost:3000` to interact with the web app.
 
 ## Demo
-
-![App Screenshot](https://github.com/camilobdez/Aprox/assets/121780547/93c44a46-b7b7-43b9-b9c4-dbc427916bc5)
-*Demo video of the application running.*
+https://github.com/camilobdez/Aprox/assets/121780547/19ca133b-cf36-4300-a639-a65de62b2756
 
 ## Acknowledgements
 This project was created as part of a numerical analysis course and includes contributions from various open-source libraries.

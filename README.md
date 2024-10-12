@@ -68,6 +68,5 @@ This project was created as part of a numerical analysis course and includes con
 
 ## Collaborators
 
-- Camilo Bermúdez
-- Luis Baena
-
+- [Camilo Bermúdez](https://www.github.com/camilobdez)
+- [Luis Baena](https://www.github.com/alejobaenam)
